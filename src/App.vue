@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 </script>
@@ -28,3 +29,17 @@ import HelloWorld from './components/HelloWorld.vue'
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
+=======
+<script>
+import AppHomePage from './pages/AppHomePage.vue';
+export default {
+  components: { AppHomePage }
+}
+</script>
+
+<template>
+  <AppHomePage />
+</template>
+
+<style></style>
+>>>>>>> 21b2492 (make scaffonding and add component home/header)
