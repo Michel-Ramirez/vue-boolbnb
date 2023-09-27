@@ -3,10 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/scss/style.scss";
 import App from "./App.vue";
 import AppHeader from "./components/AppHeader.vue";
+import HouseCard from "./components/generals/HouseCard.vue";
 import { router } from "./router";
 
 const app = createApp(App);
 app.component("AppHeader", AppHeader);
+app.component("HouseCard", HouseCard);
 // app.component("AppLoader", AppLoader);
 // app.component("AppAlert", AppAlert);
 //utilizzo il router
