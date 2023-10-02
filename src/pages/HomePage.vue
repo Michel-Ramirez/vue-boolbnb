@@ -2,7 +2,6 @@
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
 import 'animate.css';
-const endpoint = 'http://'
 export default {
     components: { ComponentSearchbar },
     data() {
