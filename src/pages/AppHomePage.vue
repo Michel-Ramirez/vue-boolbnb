@@ -12,6 +12,7 @@ export default {
 }
 </script>
 <template>
+    <!-- <AppNotFound /> -->
     <AppHeader />
     <main>
         <section>
@@ -34,7 +35,6 @@ export default {
 
         </section>
     </main>
-    <AppNotFound />
 </template>
 
 <style lang="scss">
