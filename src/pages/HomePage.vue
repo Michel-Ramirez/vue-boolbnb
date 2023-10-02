@@ -13,28 +13,26 @@ export default {
 </script>
 <template>
     <!-- <AppNotFound /> -->
-    <AppHeader />
-    <main>
-        <section>
-            <div class="container-fliud jumbotron">
-                <img class="img-fluid" src="../../public/img/jumbo_1.jpeg" alt="jumbotron_1">
-                <ComponentSearbar />
-            </div>
-        </section>
-        <section class="featured">
-            <h3 class="my-3">In evidenza</h3>
-            <div class="container">
-                <div class="row">
-                    <div class="col wrapper-featured-cards">
-                        <HouseCard class="my-3" />
-                        <HouseCard class="my-3" />
-                        <HouseCard class="my-3" />
-                    </div>
+
+    <section>
+        <div class="container-fliud jumbotron">
+            <img class="img-fluid" src="../../public/img/jumbo_1.jpeg" alt="jumbotron_1">
+            <ComponentSearbar />
+        </div>
+    </section>
+    <section class="featured">
+        <h3 class="my-3">In evidenza</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col wrapper-featured-cards">
+                    <HouseCard class="my-3" />
+                    <HouseCard class="my-3" />
+                    <HouseCard class="my-3" />
                 </div>
             </div>
+        </div>
 
-        </section>
-    </main>
+    </section>
 </template>
 
 <style lang="scss">

@@ -1,10 +1,9 @@
 <script>
-import AppHomePage from './pages/AppHomePage.vue';
-export default {
-  components: { AppHomePage }
-}
 </script>
 
 <template>
-  <AppHomePage />
+  <AppHeader />
+  <main>
+    <RouterView />
+  </main>
 </template>
