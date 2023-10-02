@@ -1,0 +1,53 @@
+@media screen and (min-width: 576) {
+  .featured .wrapper-featured-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .featured .wrapper-featured-cards {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .jumbotron {
+    .search-bar {
+      width: 500px;
+    }
+
+    .form-control {
+      font-size: 1rem;
+      height: 30px;
+    }
+  }
+
+  header .user-icon {
+    display: none;
+  }
+
+  header .action-button-group .log-button {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+@media screen and (min-width: 996px) {
+  .jumbotron {
+    .search-bar {
+      width: 800px;
+
+      .fa-magnifying-glass-location {
+        font-size: 2rem;
+      }
+    }
+
+    .form-control {
+      height: 50px;
+    }
+
+    .form-control {
+      font-size: 1rem;
+    }
+  }
+}
