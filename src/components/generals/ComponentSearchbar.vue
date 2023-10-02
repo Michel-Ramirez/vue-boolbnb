@@ -1,5 +1,6 @@
 <script>
 export default {
+    name: 'ComponentSearchbar',
     data() {
         return {
             searchCity: "",

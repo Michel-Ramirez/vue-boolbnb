@@ -1,8 +1,8 @@
 <script>
-import ComponentSearbar from '../components/generals/ComponentSearbar.vue';
+import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 
 export default {
-    components: { ComponentSearbar },
+    components: { ComponentSearchbar },
     data() {
         return {
         }
@@ -17,13 +17,18 @@ export default {
     <section>
         <div class="container-fliud jumbotron">
             <img class="img-fluid" src="../../public/img/jumbo_1.jpeg" alt="jumbotron_1">
-            <ComponentSearbar />
+            <ComponentSearchbar />
         </div>
     </section>
     <section class="featured">
         <h3 class="my-3">In evidenza</h3>
         <div class="container">
             <div class="row">
+                <div class="col wrapper-featured-cards">
+                    <HouseCard class="my-3" />
+                    <HouseCard class="my-3" />
+                    <HouseCard class="my-3" />
+                </div>
                 <div class="col wrapper-featured-cards">
                     <HouseCard class="my-3" />
                     <HouseCard class="my-3" />
@@ -55,7 +60,7 @@ export default {
 
 .featured {
 
-    margin: 50px 20px;
+    margin: 50px 0;
     border-radius: 10px;
     background-color: #25dd8417;
 
