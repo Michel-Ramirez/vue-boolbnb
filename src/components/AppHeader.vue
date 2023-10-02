@@ -9,10 +9,10 @@ export default {
         <div class="img-container d-flex align-items-center">
             <a href="/"><img class="img-fluid" src="../../public/img/logo_navbar.png" alt=""></a>
             <p class="ps-3 pt-3"><a href="/"
-                    class="link-secondary link-offset-2 link-underline link-underline-opacity-0 link-opacity-50-hover">Home</a>
+                    class="link-secondary link-offset-2 link-underline link-underline-opacity-0 link-opacity-50-hover"><strong>Home</strong></a>
             </p>
         </div>
-        <div class="pe-3">
+        <div class="pe-3 action-button-group">
             <!-- icona per il login o sing in   -->
             <div class="user-icon dropdown ">
                 <button class="user btn dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown"
@@ -34,6 +34,8 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@import "../assets/scss/mediaquery";
+
 header {
     height: 70px;
 
@@ -104,18 +106,5 @@ header {
 
 .no-caret::after {
     display: none;
-}
-
-
-
-@media screen and (min-width: 769px) {
-    header .user-icon {
-        display: none;
-    }
-
-    header .log-button {
-        display: flex;
-        gap: 10px;
-    }
 }
 </style>

@@ -38,6 +38,8 @@ export default {
 </template>
 
 <style lang="scss">
+@use '../assets/scss/mediaquery' as *;
+
 // JUMBOTRON 
 .jumbotron {
     position: relative;
@@ -68,57 +70,5 @@ export default {
     align-items: center;
     flex-direction: column;
 
-}
-
-@media screen and (min-width: 576) {
-    .wrapper-featured-cards {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-}
-
-
-@media screen and (min-width: 769px) {
-
-
-    .wrapper-featured-cards {
-        flex-direction: row;
-        gap: 20px;
-    }
-
-    .jumbotron {
-        .search-bar {
-            width: 500px;
-
-        }
-
-        .form-control {
-            font-size: 1rem;
-            height: 30px;
-        }
-
-    }
-
-
-}
-
-@media screen and (min-width: 996px) {
-    .jumbotron {
-        .search-bar {
-            width: 800px;
-
-            .fa-magnifying-glass-location {
-                font-size: 2rem;
-            }
-        }
-
-        .form-control {
-            height: 50px;
-        }
-
-        .form-control {
-            font-size: 1rem;
-        }
-    }
 }
 </style>
