@@ -1,6 +1,7 @@
 <script>
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
+import 'animate.css';
 export default {
     components: { ComponentSearchbar },
     data() {
@@ -20,12 +21,12 @@ export default {
             }
         },
         startAutoplay() {
-            autoPlay = setInterval(this.gotoNext, 2000);
+            autoPlay = setInterval(this.gotoNext, 5000);
 
         },
     },
     mounted() {
-        this.autoPlay = setInterval(this.gotoNext, 2000);
+        this.autoPlay = setInterval(this.gotoNext, 5000);
     }
 
 
@@ -40,6 +41,10 @@ export default {
             <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
                 <img class="img-fluid" :src="imgJumbo" alt="jumbotron_1">
             </figure>
+            <hgroup class="home-title">
+                <h3>Esplora, riposa, divertiti</h3>
+                <h1>La tua casa lontano da casa</h1>
+            </hgroup>
             <ComponentSearchbar />
         </div>
     </section>
@@ -82,6 +87,21 @@ export default {
         // filter: blur(2px);
     }
 
+    .animate__animated .animate__slideInRight {
+        --animate-duration: 1s;
+        --animate-delay: 0.3s;
+    }
+}
+
+.home-title {
+    text-align: center;
+    position: absolute;
+    top: 200px;
+    left: -50%;
+    right: -50%;
+    font-size: 5rem;
+    text-shadow: 1px 1px 2px black;
+    color: white;
 }
 
 // SECTION FEATURED
