@@ -6,9 +6,5 @@ export default {
 </script>
 
 <template>
-  <div>
-    <AppHomePage />
-  </div>
+  <AppHomePage />
 </template>
-
-<style></style>
