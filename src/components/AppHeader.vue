@@ -8,11 +8,11 @@ export default {
     <header class="d-flex justify-content-between align-items-center container-xxl my-2">
         <div class="img-container d-flex align-items-center">
             <a href="/"><img class="img-fluid" src="../../public/img/logo_navbar.png" alt=""></a>
-            <p><a href="/"
+            <p class="ps-3 pt-3"><a href="/"
                     class="link-secondary link-offset-2 link-underline link-underline-opacity-0 link-opacity-50-hover">Home</a>
             </p>
         </div>
-        <div class="">
+        <div class="pe-3">
             <!-- icona per il login o sing in   -->
             <div class="user-icon dropdown ">
                 <button class="user btn dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown"
@@ -89,7 +89,7 @@ header {
 
     .btn-custom {
 
-        padding: 0px 15px;
+        padding: 4px 15px;
         border-radius: 30px;
         color: #ffffff;
         border: 0;
