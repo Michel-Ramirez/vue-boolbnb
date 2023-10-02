@@ -8,5 +8,3 @@ export default {
 <template>
   <AppHomePage />
 </template>
-
-<style></style>

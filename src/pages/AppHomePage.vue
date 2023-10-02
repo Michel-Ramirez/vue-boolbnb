@@ -34,6 +34,7 @@ export default {
 
         </section>
     </main>
+    <AppNotFound />
 </template>
 
 <style lang="scss">
