@@ -22,12 +22,12 @@ export default {
  }
 
  .card {
-     width: 18rem;
+     width: 25rem;
  }
 
  @media screen and (min-width: 996px) {
      .card {
-         width: 25rem;
+         width: 45rem;
      }
  }
 </style>

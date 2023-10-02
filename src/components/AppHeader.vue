@@ -18,7 +18,7 @@ export default {
                 <div class="user-icon dropdown ">
                     <button class="user btn dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <i class=" fa-regular fa-circle-user"></i>
+                        <i class=" fa-solid fa-circle-user"></i>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Accedi</a></li>
@@ -47,6 +47,7 @@ header {
     z-index: 2;
     padding: 50px 0;
     background-color: white;
+    box-shadow: 0px 10px 10px 2px rgba(0, 0, 0, 0.5);
 
     .img-container {
         height: 70px;
