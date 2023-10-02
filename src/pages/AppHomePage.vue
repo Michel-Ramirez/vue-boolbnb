@@ -46,6 +46,13 @@ export default {
 // JUMBOTRON 
 .jumbotron {
     position: relative;
+    height: 700px;
+
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
 
     .search-bar {
         position: absolute;
