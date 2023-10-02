@@ -1,7 +1,9 @@
 <script>
+import axios from 'axios';
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
 import 'animate.css';
+const endpoint = 'http://127.0.0.1:8000/api/houses/';
 export default {
     components: { ComponentSearchbar },
     data() {
@@ -9,6 +11,8 @@ export default {
             store,
             autoPlay: null,
             currentIndex: 0,
+            evidenceHouses: [],
+            isLoading: false,
         }
     },
     methods: {
@@ -24,8 +28,18 @@ export default {
             autoPlay = setInterval(this.gotoNext, 5000);
 
         },
+        fetchEvidenceHouses() {
+            this.isLoading = true;
+            axios.get(endpoint).then(res => {
+                this.evidenceHouses = res.data;
+                console.log(this.evidenceHouses)
+            }).catch(err => {
+                console.log(err);
+            }).then(() => { this.isLoading = false })
+        }
     },
     mounted() {
+        this.fetchEvidenceHouses();
         this.autoPlay = setInterval(this.gotoNext, 5000);
     }
 
@@ -35,37 +49,32 @@ export default {
 </script>
 <template>
     <!-- <AppNotFound /> -->
-
-    <section>
-        <div class="container-fliud jumbotron">
-            <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
-                <img class="img-fluid animate__animated animate__fadeIn" :src="imgJumbo" alt="jumbotron_1">
-            </figure>
-            <hgroup class="home-title">
-                <h3>Esplora, riposa, divertiti</h3>
-                <h1>La tua casa lontano da casa</h1>
-            </hgroup>
-            <ComponentSearchbar />
-        </div>
-    </section>
-    <section class="featured">
-        <h3 class="my-3">In evidenza</h3>
-        <div class="container">
-            <div class="row">
-                <div class="col wrapper-featured-cards">
-                    <HouseCard class="my-3" />
-                    <HouseCard class="my-3" />
-                    <HouseCard class="my-3" />
-                </div>
-                <div class="col wrapper-featured-cards">
-                    <HouseCard class="my-3" />
-                    <HouseCard class="my-3" />
-                    <HouseCard class="my-3" />
+    <AppLoader v-if="isLoading" />
+    <div v-else>
+        <section>
+            <div class="container-fliud jumbotron">
+                <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
+                    <img class="img-fluid animate__animated animate__fadeInRight" :src="imgJumbo" alt="jumbotron_1">
+                </figure>
+                <hgroup class="home-title">
+                    <h3>Esplora, riposa, divertiti</h3>
+                    <h1>La tua casa lontano da casa</h1>
+                </hgroup>
+                <ComponentSearchbar />
+            </div>
+        </section>
+        <section class="featured">
+            <h3 class="my-3">In evidenza</h3>
+            <div class="container">
+                <div class="row">
+                    <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
+                        <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3" :evHouse="evHouse" />
+                    </div>
+                    <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
                 </div>
             </div>
-        </div>
-
-    </section>
+        </section>
+    </div>
 </template>
 
 <style lang="scss">
@@ -111,8 +120,6 @@ export default {
     margin: 50px 0;
     border-radius: 10px;
     background-color: #25dd8417;
-
-
 }
 
 .featured,
@@ -120,6 +127,11 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
 
+.wrapper-featured-cards {
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 </style>
