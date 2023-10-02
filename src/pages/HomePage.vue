@@ -2,6 +2,7 @@
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
 import 'animate.css';
+const endpoint = 'http://'
 export default {
     components: { ComponentSearchbar },
     data() {
@@ -39,7 +40,7 @@ export default {
     <section>
         <div class="container-fliud jumbotron">
             <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
-                <img class="img-fluid" :src="imgJumbo" alt="jumbotron_1">
+                <img class="img-fluid animate__animated animate__fadeIn" :src="imgJumbo" alt="jumbotron_1">
             </figure>
             <hgroup class="home-title">
                 <h3>Esplora, riposa, divertiti</h3>
@@ -87,9 +88,9 @@ export default {
         // filter: blur(2px);
     }
 
-    .animate__animated .animate__slideInRight {
-        --animate-duration: 1s;
-        --animate-delay: 0.3s;
+    .animate__animated.animate__fadeIn {
+        --animate-duration: 5s;
+        --animation-delay: 5s;
     }
 }
 
