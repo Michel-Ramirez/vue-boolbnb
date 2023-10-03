@@ -10,12 +10,14 @@ export default {
 </script>
 
 <template>
-    <div class="search-bar">
-        <input v-model.trim="searchCity" type="text" class="form-control"
-            placeholder="Cerca una città o indirizzo completo">
-        <button class="btn btn-search bg-white " type="button">
-            <i class="fa-solid fa-magnifying-glass-location"></i>
-        </button>
+    <div class="d-flex">
+        <div class="search-bar">
+            <input v-model.trim="searchCity" type="text" class="form-control"
+                placeholder="Cerca una città o indirizzo completo">
+            <button class="btn btn-search bg-white " type="button">
+                <i class="fa-solid fa-magnifying-glass-location"></i>
+            </button>
+        </div>
     </div>
 </template>
 

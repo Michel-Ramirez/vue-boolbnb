@@ -12,7 +12,6 @@ import { router } from "./router";
 const app = createApp(App);
 app.component("AppHeader", AppHeader);
 app.component("HouseCard", HouseCard);
-// app.component("AppLoader", AppLoader);
 app.component("AppLoader", AppLoader);
 app.component("AppNotFound", AppNotFound);
 // app.component("AppAlert", AppAlert);

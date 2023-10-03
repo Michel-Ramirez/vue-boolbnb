@@ -56,7 +56,6 @@ export default {
     <div v-else>
         <section>
             <div class="container-fliud jumbotron">
-
                 <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
                     <img class="" :src="imgJumbo" alt="jumbotron_1">
                 </figure>
@@ -64,7 +63,6 @@ export default {
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1>La tua casa lontano da casa</h1>
                 </hgroup>
-
                 <ComponentSearchbar />
             </div>
         </section>
