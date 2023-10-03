@@ -20,6 +20,16 @@
       font-size: 1rem;
       height: 30px;
     }
+
+    .home-title {
+      h1 {
+        font-size: 4rem;
+      }
+
+      h3 {
+        font-size: 2rem;
+      }
+    }
   }
 
   header .user-icon {
@@ -48,6 +58,16 @@
 
     .form-control {
       font-size: 1rem;
+    }
+
+    .home-title {
+      h1 {
+        font-size: 6rem;
+      }
+
+      h3 {
+        font-size: 3rem;
+      }
     }
   }
 }

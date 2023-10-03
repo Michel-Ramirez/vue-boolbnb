@@ -54,7 +54,7 @@ export default {
         <section>
             <div class="container-fliud jumbotron">
                 <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
-                    <img class="img-fluid animate__animated animate__fadeInRight" :src="imgJumbo" alt="jumbotron_1">
+                    <img class="" :src="imgJumbo" alt="jumbotron_1">
                 </figure>
                 <hgroup class="home-title">
                     <h3>Esplora, riposa, divertiti</h3>
@@ -121,11 +121,17 @@ export default {
     text-align: center;
     position: absolute;
     top: 200px;
-    left: -50%;
-    right: -50%;
+    left: 50%;
+    right: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
     font-size: 5rem;
     text-shadow: 1px 1px 2px black;
     color: white;
+
+    h1 {
+        font-size: 2rem;
+    }
 }
 
 // SECTION FEATURED
