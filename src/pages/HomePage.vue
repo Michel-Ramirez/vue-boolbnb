@@ -13,6 +13,7 @@ export default {
             currentIndex: 0,
             evidenceHouses: [],
             isLoading: false,
+            isSearching: true,
         }
     },
     methods: {
@@ -53,6 +54,7 @@ export default {
     <div v-else>
         <section>
             <div class="container-fliud jumbotron">
+
                 <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
                     <img class="" :src="imgJumbo" alt="jumbotron_1">
                 </figure>
@@ -60,35 +62,41 @@ export default {
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1>La tua casa lontano da casa</h1>
                 </hgroup>
+
                 <ComponentSearchbar />
             </div>
         </section>
-        <section class="featured py-5">
-            <h3 class="my-5">In evidenza</h3>
-            <div class="container">
-                <div class="row">
-                    <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
-                        <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3" :evHouse="evHouse" />
-                    </div>
-                    <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
-                </div>
-            </div>
-        </section>
-        <section class="travel py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
-                        <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo noi.
-                            Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <img src="../img/travel.jpg" alt="" class="img-fluid">
+        <div v-if="!isSearching">
+            <section class="featured py-5">
+                <h3 class="my-5">In evidenza</h3>
+                <div class="container">
+                    <div class="row">
+                        <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
+                            <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3"
+                                :evHouse="evHouse" />
+                        </div>
+                        <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="travel py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8">
+                            <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
+                            <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo
+                                noi.
+                                Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <img src="../img/travel.jpg" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- risultati della ricerca -->
     </div>
 </template>
 
@@ -98,7 +106,7 @@ export default {
 // JUMBOTRON 
 .jumbotron {
     position: relative;
-    height: 800px;
+    height: 350px;
 
     figure {
         height: 100%;
@@ -120,7 +128,7 @@ export default {
 .home-title {
     text-align: center;
     position: absolute;
-    top: 200px;
+    top: 150px;
     left: 50%;
     right: 50%;
     width: 100%;

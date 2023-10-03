@@ -43,7 +43,8 @@
 }
 
 @media screen and (min-width: 996px) {
-  .jumbotron {
+  section .jumbotron {
+    height: 600px;
     .search-bar {
       width: 800px;
 
