@@ -63,14 +63,29 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-        <section class="featured">
-            <h3 class="my-3">In evidenza</h3>
+        <section class="featured py-5">
+            <h3 class="my-5">In evidenza</h3>
             <div class="container">
                 <div class="row">
                     <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
                         <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3" :evHouse="evHouse" />
                     </div>
                     <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
+                </div>
+            </div>
+        </section>
+        <section class="travel py-5">
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-8 my-5">
+                        <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
+                        <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo noi.
+                            Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
+                        </p>
+                    </div>
+                    <div class="col-4">
+                        <img src="../img/travel.jpg" alt="" class="img-fluid">
+                    </div>
                 </div>
             </div>
         </section>
@@ -116,8 +131,6 @@ export default {
 // SECTION FEATURED
 
 .featured {
-
-    margin: 50px 0;
     border-radius: 10px;
     background-color: #25dd8417;
 }
@@ -133,5 +146,9 @@ export default {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
+}
+
+.travel {
+    background-color: #F7F7F7;
 }
 </style>
