@@ -75,9 +75,9 @@ export default {
             </div>
         </section>
         <section class="travel py-5">
-            <div class="container my-5">
+            <div class="container">
                 <div class="row">
-                    <div class="col-8 my-5">
+                    <div class="col-8">
                         <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
                         <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo noi.
                             Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
@@ -156,5 +156,11 @@ export default {
 
 .travel {
     background-color: #F7F7F7;
+
+    .row {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
 }
 </style>
