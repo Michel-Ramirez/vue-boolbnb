@@ -14,7 +14,7 @@ export default {
             <div class="evidence-services m-0 mb-3">
                 <span>stanze {{ evHouse.total_rooms }}</span> |
                 <span>letti {{ evHouse.total_beds }}</span> |
-                <span>nagni {{ evHouse.total_bath }}</span> |
+                <span>bagni {{ evHouse.total_bath }}</span> |
                 <span>mq {{ evHouse.mq }}</span>
             </div>
             <p class="address m-0">{{ evHouse.address.home_address }}</p>
