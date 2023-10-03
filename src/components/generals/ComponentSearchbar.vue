@@ -85,7 +85,7 @@ export default {
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="double-bed-check">
                                 <label class="form-check-label" for="double-bed-check">
-                                    Letto matrimoniale grnade
+                                    Letto matrimoniale grande
                                 </label>
                             </div>
                             <div class="form-check">
@@ -163,7 +163,12 @@ export default {
 
                     </div>
                 </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn-custom " href="">Invia</a>
+                </div>
             </form>
+        </div>
+        <div>
         </div>
         <div class="container">
         </div>
@@ -217,5 +222,19 @@ export default {
 
 .offcanvas.offcanvas-start {
     width: 100%;
+}
+
+.btn-custom {
+
+    padding: 4px 15px;
+    border-radius: 30px;
+    color: #ffffff;
+    border: 0;
+    background-image: linear-gradient(to right, #97E15F, #22dd85);
+    text-decoration: none;
+
+    &:hover {
+        background-image: linear-gradient(to right, #4C4C4C, #191919);
+    }
 }
 </style>
