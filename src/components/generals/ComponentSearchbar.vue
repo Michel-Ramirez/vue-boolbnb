@@ -4,6 +4,28 @@ export default {
     data() {
         return {
             searchCity: "",
+            datiModulo: {
+                room_number: '',
+                beds_number: '',
+                distance_number: '',
+                services: {
+                    wifi: false,
+                    tv: false,
+                    air_condition: false,
+                    double_bed: false,
+                    fire_place: false,
+                    dryer: false,
+                    washer: false,
+                    kitchen: false,
+                    breakfast: false,
+                    parking: false,
+                    swimming_pool: false,
+                    sauna: false,
+                    gym: false,
+                    seafront: false,
+                    animal_permissing: false,
+                },
+            },
         }
     }
 }
@@ -222,4 +244,5 @@ export default {
     &:hover {
         background-image: linear-gradient(to right, #4C4C4C, #191919);
     }
-}</style>
+}
+</style>
