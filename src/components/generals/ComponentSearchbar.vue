@@ -13,6 +13,7 @@ export default {
             isSelected: false,
             distance: "20000",
             isLoading: false,
+            debouncedFetchAddress: null,
             datiModulo: {
                 room_number: '',
                 beds_number: '',
@@ -38,6 +39,17 @@ export default {
         }
     },
     methods: {
+        handleSearchCityInput() {
+            // Clear Timeout (if exist) to avoid multiple call
+            clearTimeout(this.debouncedFetchAddress);
+
+            // Set a new timeout of 1000 milliseconds (1 second)
+            this.debouncedFetchAddress = setTimeout(() => {
+                if (this.searchCity.length) {
+                    this.fetchAddress();
+                }
+            }, 500);
+        },
         fetchAddress() {
             this.searchResults = [];
             axios.get(`https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`).then(res => {
@@ -76,7 +88,7 @@ export default {
     <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
-            <form @keyup.prevent="fetchAddress">
+            <form @keyup.prevent="handleSearchCityInput">
                 <input v-model.trim="searchCity" type="text" class="form-control"
                     placeholder="Cerca una città o indirizzo completo">
                 <button class="btn btn-search bg-white " type="submit">
