@@ -15,7 +15,6 @@ export default {
             currentIndex: 0,
             evidenceHouses: [],
             isLoading: false,
-            isSearching: true,
         }
     },
     methods: {
@@ -34,14 +33,15 @@ export default {
         fetchEvidenceHouses() {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
-                this.evidenceHouses = res.data;
-                console.log(this.evidenceHouses)
+                this.evidenceHouses = res.data.data;
+                // console.log(res.data)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
         }
     },
     mounted() {
+        store.isSearching = false;
         this.fetchEvidenceHouses();
         this.autoPlay = setInterval(this.gotoNext, 5000);
     }
@@ -66,14 +66,13 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-        <div v-if="!isSearching">
+        <div v-if="!store.isSearching">
             <section class="featured py-5">
                 <h3 class="my-5">In evidenza</h3>
                 <div class="container">
                     <div class="row">
                         <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
-                            <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3"
-                                :evHouse="evHouse" />
+                            <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
                         </div>
                         <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
                     </div>
@@ -96,7 +95,7 @@ export default {
                 </div>
             </section>
         </div>
-        <SearchPage />
+        <SearchPage v-if="store.isSearching" />
     </div>
 </template>
 

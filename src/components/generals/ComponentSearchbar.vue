@@ -1,9 +1,18 @@
 <script>
+import axios from 'axios';
+import { store } from '../../data/store';
+const tomtomApiKey = 'key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe'
 export default {
     name: 'ComponentSearchbar',
     data() {
         return {
+            store,
             searchCity: "",
+            searchResults: [],
+            currentIndex: "",
+            isSelected: false,
+            distance: "20000",
+            isLoading: false,
             datiModulo: {
                 room_number: '',
                 beds_number: '',
@@ -27,19 +36,62 @@ export default {
                 },
             },
         }
+    },
+    methods: {
+        fetchAddress() {
+            this.searchResults = [];
+            axios.get(`https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`).then(res => {
+                // console.log(res.data.results);
+                this.isSelected = false;
+                if (this.searchResults.length) this.searchResults = [];
+                const results = res.data.results
+
+                results.forEach(result => {
+                    this.searchResults.push(result);
+                });
+            }
+            ).catch().then()
+        },
+        getCoordinates(targetIndex) {
+            this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
+            const lat = this.searchResults[targetIndex].position.lat;
+            const long = this.searchResults[targetIndex].position.lon;
+            this.isSelected = true;
+            store.showCards = true;
+
+            this.isLoading = true;
+            axios.get(`http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${this.distance}&service=[]`).then(res => {
+
+                store.resultCards = res.data
+
+            }).catch().then(() => { this.isLoading = false })
+            store.isSearching = true;
+        },
+
     }
 }
 </script>
 
 <template>
+    <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
-            <input v-model.trim="searchCity" type="text" class="form-control"
-                placeholder="Cerca una città o indirizzo completo">
-            <button class="btn btn-search bg-white " type="button">
-                <i class="fa-solid fa-magnifying-glass-location"></i>
-            </button>
+            <form @keyup.prevent="fetchAddress">
+                <input v-model.trim="searchCity" type="text" class="form-control"
+                    placeholder="Cerca una città o indirizzo completo">
+                <button class="btn btn-search bg-white " type="submit">
+                    <i class="fa-solid fa-magnifying-glass-location"></i>
+                </button>
+            </form>
+            <ul class="list-group list-group-flush" v-if="!isSelected">
+                <li v-for="(result, index) in searchResults" :key="result.address.country" class="list-group-item"
+                    @click="getCoordinates(index)">
+                    {{ result.address.freeformAddress }}
+                </li>
+            </ul>
         </div>
+
+        <!-- BUTTON ACTIVATE OFFCANVAS -->
 
         <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
@@ -48,8 +100,6 @@ export default {
     </div>
 
     <!-- OFFCANVAS -->
-
-    <!-- !!! TODO rimuovere show -->
 
     <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
         aria-labelledby="staticBackdropLabel">
@@ -225,6 +275,19 @@ export default {
 
     .btn-search:active {
         border-color: white;
+    }
+
+    .list-group {
+        border-radius: 5px;
+
+        .list-group-item {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #2CDD82;
+                color: white;
+            }
+        }
     }
 }
 
