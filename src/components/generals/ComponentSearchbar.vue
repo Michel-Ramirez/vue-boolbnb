@@ -1,16 +1,18 @@
 <script>
 import axios from 'axios';
+import { store } from '../../data/store';
 const tomtomApiKey = 'key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe'
 export default {
     name: 'ComponentSearchbar',
     data() {
         return {
+            store,
             searchCity: "",
             searchResults: [],
             currentIndex: "",
-            lat: "",
-            long: "",
             isSelected: false,
+            distance: "20000",
+            isLoading: false,
             datiModulo: {
                 room_number: '',
                 beds_number: '',
@@ -37,6 +39,7 @@ export default {
     },
     methods: {
         fetchAddress() {
+            this.searchResults = [];
             axios.get(`https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`).then(res => {
                 // console.log(res.data.results);
                 this.isSelected = false;
@@ -51,9 +54,18 @@ export default {
         },
         getCoordinates(targetIndex) {
             this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
-            this.lat = this.searchResults[targetIndex].position.lat;
-            this.long = this.searchResults[targetIndex].position.lon;
+            const lat = this.searchResults[targetIndex].position.lat;
+            const long = this.searchResults[targetIndex].position.lon;
             this.isSelected = true;
+            store.showCards = true;
+
+            this.isLoading = true;
+            axios.get(`http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${this.distance}&service=[]`).then(res => {
+
+                store.resultCards = res.data
+
+            }).catch().then(() => { this.isLoading = false })
+            store.isSearching = true;
         },
 
     }
@@ -61,9 +73,10 @@ export default {
 </script>
 
 <template>
+    <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
-            <form @submit.prevent="fetchAddress">
+            <form @keyup.prevent="fetchAddress">
                 <input v-model.trim="searchCity" type="text" class="form-control"
                     placeholder="Cerca una città o indirizzo completo">
                 <button class="btn btn-search bg-white " type="submit">
