@@ -35,7 +35,7 @@ export default {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
                 this.evidenceHouses = res.data;
-                console.log(this.evidenceHouses)
+                // console.log(this.evidenceHouses)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
