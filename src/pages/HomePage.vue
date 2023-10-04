@@ -1,11 +1,13 @@
 <script>
+
 import axios from 'axios';
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
 import 'animate.css';
+import SearchPage from '../components/generals/SearchPage.vue';
 const endpoint = 'http://127.0.0.1:8000/api/houses/';
 export default {
-    components: { ComponentSearchbar },
+    components: { ComponentSearchbar, SearchPage },
     data() {
         return {
             store,
@@ -31,14 +33,15 @@ export default {
         fetchEvidenceHouses() {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
-                this.evidenceHouses = res.data;
-                console.log(this.evidenceHouses)
+                this.evidenceHouses = res.data.data;
+                // console.log(res.data)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
         }
     },
     mounted() {
+        store.isSearching = false;
         this.fetchEvidenceHouses();
         this.autoPlay = setInterval(this.gotoNext, 5000);
     }
@@ -63,32 +66,36 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-        <section class="featured py-5">
-            <h3 class="my-5">In evidenza</h3>
-            <div class="container">
-                <div class="row">
-                    <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
-                        <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3" :evHouse="evHouse" />
-                    </div>
-                    <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
-                </div>
-            </div>
-        </section>
-        <section class="travel py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
-                        <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo noi.
-                            Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <img src="../img/travel.jpg" alt="" class="img-fluid">
+        <div v-if="!store.isSearching">
+            <section class="featured py-5">
+                <h3 class="my-5">In evidenza</h3>
+                <div class="container">
+                    <div class="row">
+                        <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
+                            <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
+                        </div>
+                        <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="travel py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8">
+                            <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
+                            <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo
+                                noi.
+                                Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <img src="../img/travel.jpg" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <SearchPage v-if="store.isSearching" />
     </div>
 </template>
 
@@ -98,7 +105,7 @@ export default {
 // JUMBOTRON 
 .jumbotron {
     position: relative;
-    height: 800px;
+    height: 350px;
 
     figure {
         height: 100%;
@@ -120,7 +127,7 @@ export default {
 .home-title {
     text-align: center;
     position: absolute;
-    top: 200px;
+    top: 150px;
     left: 50%;
     right: 50%;
     width: 100%;
