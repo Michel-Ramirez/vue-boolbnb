@@ -2,8 +2,29 @@
 export default {
     data() {
         return {
-            searchResult: [],
-        }
+            datiModulo: {
+                room_number: '',
+                beds_number: '',
+                distance_number: '',
+                services: {
+                    wifi: false,
+                    tv: false,
+                    air_condition: false,
+                    double_bed: false,
+                    fire_place: false,
+                    dryer: false,
+                    washer: false,
+                    kitchen: false,
+                    breakfast: false,
+                    parking: false,
+                    swimming_pool: false,
+                    sauna: false,
+                    gym: false,
+                    seafront: false,
+                    animal_permissing: false,
+                },
+            },
+        };
     }
 }
 </script>
