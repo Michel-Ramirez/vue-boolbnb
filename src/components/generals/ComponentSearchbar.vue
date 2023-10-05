@@ -14,6 +14,7 @@ export default {
             distance: "20000",
             isLoading: false,
             debouncedFetchAddress: null,
+            isClicked: false,
             datiModulo: {
                 room_number: "",
                 beds_number: "",
@@ -82,7 +83,9 @@ export default {
                     `http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${this.distance}&service=[]`
                 )
                 .then((res) => {
+
                     store.resultCards = res.data;
+
                 })
                 .catch()
                 .then(() => {

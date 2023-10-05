@@ -8,6 +8,6 @@ export const store = reactive({
     "../../public/img/jumbo_4.jpg",
   ],
   isSearching: false,
-  resultCards: null,
+  resultCards: [],
   showCards: false,
 });
