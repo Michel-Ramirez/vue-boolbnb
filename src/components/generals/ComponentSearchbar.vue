@@ -185,8 +185,8 @@ export default {
 
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button @click="sendFilter()" type="button" class="btn-custom">Invia</button>
-
+                                <button data-bs-dismiss="offcanvas" @click="sendFilter()" type="button"
+                                    class="btn-custom">Invia</button>
                             </div>
                         </div>
                     </div>
