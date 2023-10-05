@@ -2,8 +2,6 @@
 import axios from 'axios';
 const distance = 20000
 const endpoint = `http://127.0.0.1:8000/api/houses/search`
-
-import axios from "axios";
 import { store } from "../../data/store";
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
 export default {
@@ -31,13 +29,18 @@ export default {
         }
     },
     methods: {
-        isSelected(id) {
-            this.serviceSelected.push(id);
+        isSelect(id) {
+            if (this.serviceSelected.includes(id)) {
+                this.serviceSelected = this.serviceSelected.filter(function (item) {
+                    return item != id;
+                })
+            } else this.serviceSelected.push(id);
+
 
         },
         sendFilter() {
             axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-                this.houseFiltered = res.data;
+                store.resultCards = res.data;
             })
         },
         handleSearchCityInput() {
@@ -145,8 +148,6 @@ export default {
                             <label for="room_number_id" class="form-label">Stanze:</label>
                             <input v-model="room_number" type="number" class="form-control" id="room_number_id">
 
-                            <input v-model="datiModulo.room_number" type="number" class="form-control"
-                                id="room_number_id" />
 
                         </div>
                     </div>
@@ -155,8 +156,6 @@ export default {
                             <label for="beds_number_id" class="form-label">Posti letto:</label>
                             <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
 
-                            <input v-model="datiModulo.beds_number" type="number" class="form-control"
-                                id="beds_number_id" />
 
                         </div>
                     </div>
@@ -164,12 +163,11 @@ export default {
                 <div class="row">
                     <div class="col-7">
                         <div class="mb-3">
-                            <label for="distance_number_id" class="form-label">Distanza in km dal indirizzo
+                            <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
                                 ricercato</label>
                             <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
 
-                            <input v-model="datiModulo.distance_number" type="number" class="form-control"
-                                id="distance_number_id" />
+
 
                         </div>
                     </div>
@@ -179,101 +177,18 @@ export default {
                         <div class="col">
                             <h6>Servizi della stanza</h6>
                             <div class="form-check" v-for="service in services" :key="service.id">
-                                <input @click="isSelected(service.id)" class="form-check-input" type="checkbox">
+                                <input @click="isSelect(service.id)" class="form-check-input" type="checkbox">
                                 <label class="form-check-label"><i :class="service.icon"></i> {{
-                                    service.name }}</label>
+                                    service.name }}
+                                </label>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="wifi-check"
-                                        v-model="datiModulo.services.wifi" />
-                                    <label class="form-check-label" for="wifi-check">Wifi</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="tv-check"
-                                        v-model="datiModulo.services.tv" />
-                                    <label class="form-check-label" for="tv-check">TV</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="air-condition-check"
-                                        v-model="datiModulo.services.air_condition" />
-                                    <label class="form-check-label" for="air-condition-check">Aria Condizionata</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="double-bed-check"
-                                        v-model="datiModulo.services.double_bed" />
-                                    <label class="form-check-label" for="double-bed-check">Letto matrimoniale grande</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="fire-place-check"
-                                        v-model="datiModulo.services.fire_place" />
-                                    <label class="form-check-label" for="fire-place-check">Camino</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="dryer-check"
-                                        v-model="datiModulo.services.dryer" />
-                                    <label class="form-check-label" for="dryer-check">Asciugacapelli</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="washer-check"
-                                        v-model="datiModulo.services.washer" />
-                                    <label class="form-check-label" for="washer-check">Lavatrice</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="kitchen-check"
-                                        v-model="datiModulo.services.kitchen" />
-                                    <label class="form-check-label" for="kitchen-check">Cucina</label>
-                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button @click="sendFilter()" type="button" class="btn-custom">Invia</button>
+
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <h6>Servizi della struttura</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="breakfast-check"
-                                        v-model="datiModulo.services.breakfast" />
-                                    <label class="form-check-label" for="breakfast-check">Colazione</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="parking-check"
-                                        v-model="datiModulo.services.parking" />
-                                    <label class="form-check-label" for="parking-check">Posto auto</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="swimmingpool-check"
-                                        v-model="datiModulo.services.swimming_pool" />
-                                    <label class="form-check-label" for="swimmingpool-check">Piscina</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sauna-check"
-                                        v-model="datiModulo.services.sauna" />
-                                    <label class="form-check-label" for="sauna-check">Sauna</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="gym-check"
-                                        v-model="datiModulo.services.gym" />
-                                    <label class="form-check-label" for="gym-check">Palestra</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="seafront-check"
-                                        v-model="datiModulo.services.seafront" />
-                                    <label class="form-check-label" for="seafront-check">Lungo il mare</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="animal-permissing-check"
-                                        v-model="datiModulo.services.animal_permissing" />
-                                    <label class="form-check-label" for="animal-permissing-check">Animali domestici
-                                        ammessi</label>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button @click="sendFilter()" type="button" class="btn-custom">Invia</button>
-                        <button type="submit" class="btn-custom">
-                            Invia
-                        </button>
-
                     </div>
                 </div>
             </form>
