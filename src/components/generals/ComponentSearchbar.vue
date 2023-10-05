@@ -1,9 +1,11 @@
 <script>
 import axios from 'axios';
+import { store } from "../../data/store";
+import { router } from '../../router/index.js';
 const distance = 20000
 const endpoint = `http://127.0.0.1:8000/api/houses/search`
-import { store } from "../../data/store";
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
+
 export default {
     name: "ComponentSearchbar",
     data() {
@@ -80,7 +82,7 @@ export default {
             this.isSelected = true;
             store.showCards = true;
 
-            this.isLoading = true;
+            store.isLoading = true;
             axios
                 .get(
                     `http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`
@@ -92,9 +94,9 @@ export default {
                 })
                 .catch()
                 .then(() => {
-                    this.isLoading = false;
                 });
-            store.isSearching = true;
+            router.push({ name: 'searchpage' });
+
         },
     },
     created() {
@@ -105,7 +107,7 @@ export default {
 </script>
 
 <template>
-    <AppLoader v-if="isLoading" />
+    <AppLoader v-if="store.isLoading" />
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">

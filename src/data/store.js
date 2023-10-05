@@ -7,7 +7,7 @@ export const store = reactive({
     "../../public/img/jumbo_3.jpg",
     "../../public/img/jumbo_4.jpg",
   ],
-  isSearching: false,
+  isLoading: false,
   resultCards: [],
   showCards: false,
 });

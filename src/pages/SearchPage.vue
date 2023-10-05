@@ -1,7 +1,7 @@
 <script>
-import axios from 'axios';
-import { store } from '../../data/store';
+import { store } from '../data/store';
 export default {
+    name: 'SearchPage',
     data() {
         return {
             store,
@@ -10,6 +10,7 @@ export default {
 }
 </script>
 <template>
+    <!-- <AppLoader v-if="isLoading" /> -->
     <section class="container-sm container-xxl mt-5">
         <div v-if="!store.resultCards.length">
             <h5 class="text-center">Siamo spiacenti non ci sono appartamenti in questa località</h5>

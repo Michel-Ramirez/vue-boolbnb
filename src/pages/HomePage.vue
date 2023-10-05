@@ -4,10 +4,10 @@ import axios from 'axios';
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
 import 'animate.css';
-import SearchPage from '../components/generals/SearchPage.vue';
 const endpoint = 'http://127.0.0.1:8000/api/houses/';
 export default {
-    components: { ComponentSearchbar, SearchPage },
+    components: { ComponentSearchbar },
+    name: 'HomePage',
     data() {
         return {
             store,
@@ -53,9 +53,6 @@ export default {
     <div v-else>
         <section>
             <div class="container-fliud jumbotron">
-                <!-- <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
-                    <img class="" :src="imgJumbo" alt="jumbotron_1">
-                </figure> -->
                 <hgroup class="home-title my-5">
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1>La tua casa lontano da casa</h1>
@@ -92,7 +89,6 @@ export default {
                 </div>
             </section>
         </div>
-        <SearchPage v-if="store.isSearching" />
     </div>
 </template>
 
