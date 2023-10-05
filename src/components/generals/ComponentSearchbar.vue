@@ -1,9 +1,9 @@
 <script>
-import axios from 'axios';
-import { store } from '../../data/store';
-const tomtomApiKey = 'key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe'
+import axios from "axios";
+import { store } from "../../data/store";
+const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
 export default {
-    name: 'ComponentSearchbar',
+    name: "ComponentSearchbar",
     data() {
         return {
             store,
@@ -14,10 +14,11 @@ export default {
             distance: "20000",
             isLoading: false,
             debouncedFetchAddress: null,
+            isClicked: false,
             datiModulo: {
-                room_number: '',
-                beds_number: '',
-                distance_number: '',
+                room_number: "",
+                beds_number: "",
+                distance_number: "",
                 services: {
                     wifi: false,
                     tv: false,
@@ -36,7 +37,7 @@ export default {
                     animal_permissing: false,
                 },
             },
-        }
+        };
     },
     methods: {
         handleSearchCityInput() {
@@ -52,17 +53,22 @@ export default {
         },
         fetchAddress() {
             this.searchResults = [];
-            axios.get(`https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`).then(res => {
-                // console.log(res.data.results);
-                this.isSelected = false;
-                if (this.searchResults.length) this.searchResults = [];
-                const results = res.data.results
+            axios
+                .get(
+                    `https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`
+                )
+                .then((res) => {
+                    // console.log(res.data.results);
+                    this.isSelected = false;
+                    if (this.searchResults.length) this.searchResults = [];
+                    const results = res.data.results;
 
-                results.forEach(result => {
-                    this.searchResults.push(result);
-                });
-            }
-            ).catch().then()
+                    results.forEach((result) => {
+                        this.searchResults.push(result);
+                    });
+                })
+                .catch()
+                .then();
         },
         getCoordinates(targetIndex) {
             this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
@@ -72,16 +78,23 @@ export default {
             store.showCards = true;
 
             this.isLoading = true;
-            axios.get(`http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${this.distance}&service=[]`).then(res => {
+            axios
+                .get(
+                    `http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${this.distance}&service=[]`
+                )
+                .then((res) => {
 
-                store.resultCards = res.data
+                    store.resultCards = res.data;
 
-            }).catch().then(() => { this.isLoading = false })
+                })
+                .catch()
+                .then(() => {
+                    this.isLoading = false;
+                });
             store.isSearching = true;
         },
-
-    }
-}
+    },
+};
 </script>
 
 <template>
@@ -90,8 +103,8 @@ export default {
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">
                 <input v-model.trim="searchCity" type="text" class="form-control"
-                    placeholder="Cerca una città o indirizzo completo">
-                <button class="btn btn-search bg-white " type="submit">
+                    placeholder="Cerca una città o indirizzo completo" />
+                <button class="btn btn-search bg-white" type="submit">
                     <i class="fa-solid fa-magnifying-glass-location"></i>
                 </button>
             </form>
@@ -104,7 +117,6 @@ export default {
         </div>
 
         <!-- BUTTON ACTIVATE OFFCANVAS -->
-
         <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
             <i class="fa-solid fa-sliders"></i>
@@ -116,7 +128,9 @@ export default {
     <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
         aria-labelledby="staticBackdropLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">Filtri</h5>
+            <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
+                Filtri
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
@@ -125,13 +139,15 @@ export default {
                     <div class="col-5">
                         <div class="mb-3">
                             <label for="room_number_id" class="form-label">Stanze:</label>
-                            <input v-model="datiModulo.room_number" type="number" class="form-control" id="room_number_id">
+                            <input v-model="datiModulo.room_number" type="number" class="form-control"
+                                id="room_number_id" />
                         </div>
                     </div>
                     <div class="col-5">
                         <div class="mb-3">
                             <label for="beds_number_id" class="form-label">Posti letto:</label>
-                            <input v-model="datiModulo.beds_number" type="number" class="form-control" id="beds_number_id">
+                            <input v-model="datiModulo.beds_number" type="number" class="form-control"
+                                id="beds_number_id" />
                         </div>
                     </div>
                 </div>
@@ -141,7 +157,7 @@ export default {
                             <label for="distance_number_id" class="form-label">Distanza in km dal indirizzo
                                 ricercato</label>
                             <input v-model="datiModulo.distance_number" type="number" class="form-control"
-                                id="distance_number_id">
+                                id="distance_number_id" />
                         </div>
                     </div>
                 </div>
@@ -151,42 +167,42 @@ export default {
                             <h6>Servizi della stanza</h6>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="wifi-check"
-                                    v-model="datiModulo.services.wifi">
+                                    v-model="datiModulo.services.wifi" />
                                 <label class="form-check-label" for="wifi-check">Wifi</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="tv-check"
-                                    v-model="datiModulo.services.tv">
+                                    v-model="datiModulo.services.tv" />
                                 <label class="form-check-label" for="tv-check">TV</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="air-condition-check"
-                                    v-model="datiModulo.services.air_condition">
+                                    v-model="datiModulo.services.air_condition" />
                                 <label class="form-check-label" for="air-condition-check">Aria Condizionata</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="double-bed-check"
-                                    v-model="datiModulo.services.double_bed">
+                                    v-model="datiModulo.services.double_bed" />
                                 <label class="form-check-label" for="double-bed-check">Letto matrimoniale grande</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="fire-place-check"
-                                    v-model="datiModulo.services.fire_place">
+                                    v-model="datiModulo.services.fire_place" />
                                 <label class="form-check-label" for="fire-place-check">Camino</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="dryer-check"
-                                    v-model="datiModulo.services.dryer">
+                                    v-model="datiModulo.services.dryer" />
                                 <label class="form-check-label" for="dryer-check">Asciugacapelli</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="washer-check"
-                                    v-model="datiModulo.services.washer">
+                                    v-model="datiModulo.services.washer" />
                                 <label class="form-check-label" for="washer-check">Lavatrice</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="kitchen-check"
-                                    v-model="datiModulo.services.kitchen">
+                                    v-model="datiModulo.services.kitchen" />
                                 <label class="form-check-label" for="kitchen-check">Cucina</label>
                             </div>
                         </div>
@@ -196,37 +212,37 @@ export default {
                             <h6>Servizi della struttura</h6>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="breakfast-check"
-                                    v-model="datiModulo.services.breakfast">
+                                    v-model="datiModulo.services.breakfast" />
                                 <label class="form-check-label" for="breakfast-check">Colazione</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="parking-check"
-                                    v-model="datiModulo.services.parking">
+                                    v-model="datiModulo.services.parking" />
                                 <label class="form-check-label" for="parking-check">Posto auto</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="swimmingpool-check"
-                                    v-model="datiModulo.services.swimming_pool">
+                                    v-model="datiModulo.services.swimming_pool" />
                                 <label class="form-check-label" for="swimmingpool-check">Piscina</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="sauna-check"
-                                    v-model="datiModulo.services.sauna">
+                                    v-model="datiModulo.services.sauna" />
                                 <label class="form-check-label" for="sauna-check">Sauna</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="gym-check"
-                                    v-model="datiModulo.services.gym">
+                                    v-model="datiModulo.services.gym" />
                                 <label class="form-check-label" for="gym-check">Palestra</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="seafront-check"
-                                    v-model="datiModulo.services.seafront">
+                                    v-model="datiModulo.services.seafront" />
                                 <label class="form-check-label" for="seafront-check">Lungo il mare</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="animal-permissing-check"
-                                    v-model="datiModulo.services.animal_permissing">
+                                    v-model="datiModulo.services.animal_permissing" />
                                 <label class="form-check-label" for="animal-permissing-check">Animali domestici
                                     ammessi</label>
                             </div>
@@ -234,36 +250,25 @@ export default {
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn-custom">Invia</button>
+                    <button type="submit" class="btn-custom">
+                        Invia
+                    </button>
                 </div>
             </form>
-        </div>
-        <div>
-        </div>
-        <div class="container">
         </div>
     </div>
 </template>
 
 <style lang="scss">
-.wrapper-search {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-
-}
-
 .search-bar {
     width: 300px;
     box-shadow: 0px 0px 49px 10px rgba(37, 221, 133, 0.7);
     position: relative;
 
     .form-control {
-        height: 100%;
+        height: 40px;
         border: 0;
-        font-size: 0.7rem;
+        font-size: 1rem;
     }
 
     .btn-search {
@@ -296,11 +301,15 @@ export default {
             cursor: pointer;
 
             &:hover {
-                background-color: #2CDD82;
+                background-color: #2cdd82;
                 color: white;
             }
         }
     }
+}
+
+.open-offcanvas {
+    height: 40px;
 }
 
 .offcanvas.offcanvas-start {
@@ -308,16 +317,15 @@ export default {
 }
 
 .btn-custom {
-
     padding: 4px 15px;
     border-radius: 30px;
     color: #ffffff;
     border: 0;
-    background-image: linear-gradient(to right, #97E15F, #22dd85);
+    background-image: linear-gradient(to right, #97e15f, #22dd85);
     text-decoration: none;
 
     &:hover {
-        background-image: linear-gradient(to right, #4C4C4C, #191919);
+        background-image: linear-gradient(to right, #4c4c4c, #191919);
     }
 }
 </style>
