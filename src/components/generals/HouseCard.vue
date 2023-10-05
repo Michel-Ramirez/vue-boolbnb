@@ -1,24 +1,24 @@
 <script>
 export default {
     props: {
-        evHouse: Object
+        house: Object,
     }
 }
 </script>
 
 <template>
     <div class="card">
-        <img :src="evHouse.photo" class="card-img-top" alt="jumbo">
+        <img :src="house.photo" class="card-img-top" alt="jumbo">
         <div class="card-body">
-            <h6>{{ evHouse.name }}</h6>
+            <h6>{{ house.name }}</h6>
             <div class="evidence-services m-0 mb-3">
-                <span>stanze {{ evHouse.total_rooms }}</span> |
-                <span>letti {{ evHouse.total_beds }}</span> |
-                <span>bagni {{ evHouse.total_bath }}</span> |
-                <span>mq {{ evHouse.mq }}</span>
+                <span>stanze {{ house.total_rooms }}</span> |
+                <span>letti {{ house.total_beds }}</span> |
+                <span>bagni {{ house.total_bath }}</span> |
+                <span>mq {{ house.mq }}</span>
             </div>
-            <p class="address m-0">{{ evHouse.address.home_address }}</p>
-            <div><strong>{{ evHouse.night_price }} /Notte</strong></div>
+            <!-- <p class="address m-0">{{ house.address.home_address }}</p> -->
+            <div><strong>{{ house.night_price }} /Notte</strong></div>
         </div>
     </div>
 </template>

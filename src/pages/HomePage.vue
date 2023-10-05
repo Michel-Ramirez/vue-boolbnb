@@ -15,7 +15,6 @@ export default {
             currentIndex: 0,
             evidenceHouses: [],
             isLoading: false,
-            isSearching: true,
         }
     },
     methods: {
@@ -34,20 +33,18 @@ export default {
         fetchEvidenceHouses() {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
-                this.evidenceHouses = res.data;
-                console.log(this.evidenceHouses)
+                this.evidenceHouses = res.data.data;
+                // console.log(res.data)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
         }
     },
     mounted() {
+        store.isSearching = false;
         this.fetchEvidenceHouses();
         this.autoPlay = setInterval(this.gotoNext, 5000);
     }
-
-
-    // inserire chiamata axios con il la variabile di ricerca per mostrare in pagina i risultati, mantenere in memoria la città ricercata.
 }
 </script>
 <template>
@@ -56,24 +53,23 @@ export default {
     <div v-else>
         <section>
             <div class="container-fliud jumbotron">
-                <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
+                <!-- <figure v-for="(imgJumbo, index) in store.jumboCarousel" v-show="currentIndex === index">
                     <img class="" :src="imgJumbo" alt="jumbotron_1">
-                </figure>
-                <hgroup class="home-title">
+                </figure> -->
+                <hgroup class="home-title my-5">
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1>La tua casa lontano da casa</h1>
                 </hgroup>
                 <ComponentSearchbar />
             </div>
         </section>
-        <div v-if="!isSearching">
+        <div v-if="!store.isSearching">
             <section class="featured py-5">
                 <h3 class="my-5">In evidenza</h3>
                 <div class="container">
                     <div class="row">
                         <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
-                            <HouseCard v-for="evHouse in evidenceHouses" :key="evHouse.id" class="my-3"
-                                :evHouse="evHouse" />
+                            <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
                         </div>
                         <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
                     </div>
@@ -96,7 +92,7 @@ export default {
                 </div>
             </section>
         </div>
-        <SearchPage />
+        <SearchPage v-if="store.isSearching" />
     </div>
 </template>
 
@@ -105,8 +101,16 @@ export default {
 
 // JUMBOTRON 
 .jumbotron {
-    position: relative;
-    height: 350px;
+    // position: relative;
+    height: 450px;
+    background-image: url(../../public/img/jumbo_5.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
 
     figure {
         height: 100%;
@@ -127,12 +131,6 @@ export default {
 
 .home-title {
     text-align: center;
-    position: absolute;
-    top: 150px;
-    left: 50%;
-    right: 50%;
-    width: 100%;
-    transform: translate(-50%, -50%);
     font-size: 5rem;
     text-shadow: 1px 1px 2px black;
     color: white;
