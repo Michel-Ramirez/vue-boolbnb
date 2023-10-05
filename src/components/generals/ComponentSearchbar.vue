@@ -1,33 +1,39 @@
 <script>
+import axios from 'axios';
+const lat = 41.902800
+const long = 12.4964000
+const distance = 20000
+const endpoint = `http://127.0.0.1:8000/api/houses/search`
+
 export default {
     name: 'ComponentSearchbar',
     data() {
         return {
-            searchCity: "",
-            datiModulo: {
-                room_number: '',
-                beds_number: '',
-                distance_number: '',
-                services: {
-                    wifi: false,
-                    tv: false,
-                    air_condition: false,
-                    double_bed: false,
-                    fire_place: false,
-                    dryer: false,
-                    washer: false,
-                    kitchen: false,
-                    breakfast: false,
-                    parking: false,
-                    swimming_pool: false,
-                    sauna: false,
-                    gym: false,
-                    seafront: false,
-                    animal_permissing: false,
-                },
-            },
+            room_number: '',
+            beds_number: '',
+            distance_number: '',
+            searchCity: '',
+            services: [],
+            serviceSelected: [],
+            houseFiltered: [],
         }
-    }
+    },
+    created() {
+        axios.get(`http://127.0.0.1:8000/api/services`)
+            .then((res) => { this.services = res.data })
+    },
+    methods: {
+        isSelected(id) {
+            this.serviceSelected.push(id);
+
+        },
+        sendFilter() {
+            axios.get(endpoint + `?lat=${lat}&long=${long}&distance=${distance}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
+                this.houseFiltered = res.data;
+            })
+        },
+
+    },
 }
 </script>
 
@@ -58,18 +64,18 @@ export default {
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <form @submit.prevent="inviaModulo">
+            <form>
                 <div class="row">
                     <div class="col-5">
                         <div class="mb-3">
                             <label for="room_number_id" class="form-label">Stanze:</label>
-                            <input v-model="datiModulo.room_number" type="number" class="form-control" id="room_number_id">
+                            <input v-model="room_number" type="number" class="form-control" id="room_number_id">
                         </div>
                     </div>
                     <div class="col-5">
                         <div class="mb-3">
                             <label for="beds_number_id" class="form-label">Posti letto:</label>
-                            <input v-model="datiModulo.beds_number" type="number" class="form-control" id="beds_number_id">
+                            <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
                         </div>
                     </div>
                 </div>
@@ -78,8 +84,7 @@ export default {
                         <div class="mb-3">
                             <label for="distance_number_id" class="form-label">Distanza in km dal indirizzo
                                 ricercato</label>
-                            <input v-model="datiModulo.distance_number" type="number" class="form-control"
-                                id="distance_number_id">
+                            <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
                         </div>
                     </div>
                 </div>
@@ -87,98 +92,18 @@ export default {
                     <div class="row me-5">
                         <div class="col">
                             <h6>Servizi della stanza</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="wifi-check"
-                                    v-model="datiModulo.services.wifi">
-                                <label class="form-check-label" for="wifi-check">Wifi</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="tv-check"
-                                    v-model="datiModulo.services.tv">
-                                <label class="form-check-label" for="tv-check">TV</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="air-condition-check"
-                                    v-model="datiModulo.services.air_condition">
-                                <label class="form-check-label" for="air-condition-check">Aria Condizionata</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="double-bed-check"
-                                    v-model="datiModulo.services.double_bed">
-                                <label class="form-check-label" for="double-bed-check">Letto matrimoniale grande</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="fire-place-check"
-                                    v-model="datiModulo.services.fire_place">
-                                <label class="form-check-label" for="fire-place-check">Camino</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="dryer-check"
-                                    v-model="datiModulo.services.dryer">
-                                <label class="form-check-label" for="dryer-check">Asciugacapelli</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="washer-check"
-                                    v-model="datiModulo.services.washer">
-                                <label class="form-check-label" for="washer-check">Lavatrice</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="kitchen-check"
-                                    v-model="datiModulo.services.kitchen">
-                                <label class="form-check-label" for="kitchen-check">Cucina</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <h6>Servizi della struttura</h6>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="breakfast-check"
-                                    v-model="datiModulo.services.breakfast">
-                                <label class="form-check-label" for="breakfast-check">Colazione</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="parking-check"
-                                    v-model="datiModulo.services.parking">
-                                <label class="form-check-label" for="parking-check">Posto auto</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="swimmingpool-check"
-                                    v-model="datiModulo.services.swimming_pool">
-                                <label class="form-check-label" for="swimmingpool-check">Piscina</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="sauna-check"
-                                    v-model="datiModulo.services.sauna">
-                                <label class="form-check-label" for="sauna-check">Sauna</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="gym-check"
-                                    v-model="datiModulo.services.gym">
-                                <label class="form-check-label" for="gym-check">Palestra</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="seafront-check"
-                                    v-model="datiModulo.services.seafront">
-                                <label class="form-check-label" for="seafront-check">Lungo il mare</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="animal-permissing-check"
-                                    v-model="datiModulo.services.animal_permissing">
-                                <label class="form-check-label" for="animal-permissing-check">Animali domestici
-                                    ammessi</label>
+                            <div class="form-check" v-for="service in services" :key="service.id">
+                                <input @click="isSelected(service.id)" class="form-check-input" type="checkbox">
+                                <label class="form-check-label"><i :class="service.icon"></i> {{
+                                    service.name }}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn-custom">Invia</button>
+                    <button @click="sendFilter()" type="button" class="btn-custom">Invia</button>
                 </div>
             </form>
-        </div>
-        <div>
-        </div>
-        <div class="container">
         </div>
     </div>
 </template>
