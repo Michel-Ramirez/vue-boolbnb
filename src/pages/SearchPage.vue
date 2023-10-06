@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios';
 import { store } from '../data/store';
-import { router } from '../router/index';
+import { useRouter } from 'vue-router';
 import Searchbar from '../components/generals/ComponentSearchbar.vue';
 export default {
     name: 'SearchPage',
@@ -9,30 +9,60 @@ export default {
     data() {
         return {
             store,
+            lat: "",
+            long: "",
+            distance: "",
+            isLoading: true,
         };
     },
     methods: {
-        getSearchResult() {
-            const { lat, long, distance } = this.$route.query;
-            axios
-                .get(`http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${distance}&service=[]`)
-                .then((res) => {
+        async getSearchResult() {
+            this.lat = this.$route.query.lat;
+            this.long = this.$route.query.long;
+            this.distance = this.$route.query.distance;
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`);
+                store.resultCards = response.data;
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async sendFilter() {
+            await this.getSearchResult(); // Attendiamo il completamento di getSearchResult
 
-                    store.resultCards = res.data;
+            // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
+            try {
+                const response = await axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`);
+                store.resultCards = response.data;
 
-                })
-                .catch()
-                .then(() => {
+                // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
+                const router = useRouter();
+                router.push({
+                    name: 'searchpage',
+                    query: {
+                        city: this.searchCity,
+                        lat: this.lat,
+                        long: this.long,
+                        distance: this.distance_number,
+                        total_rooms: this.room_number,
+                        total_beds: this.beds_number,
+                        service: this.serviceSelected.join(',')
+                    }
                 });
-        }
+            } catch (error) {
+                console.error(error);
+            }
+        },
     },
-    mounted() {
-        this.getSearchResult();
+    async created() {
+        await this.getSearchResult(); // Attendiamo il completamento di getSearchResult
+        this.isLoading = false;
     }
+
 }
 </script>
 <template>
-    <!-- <AppLoader v-if="isLoading" /> -->
+    <AppLoader v-if="isLoading" />
     <section class="container-sm container-xxl mt-5 d-flex flex-column align-items-center">
         <div class="my-5">
             <Searchbar />

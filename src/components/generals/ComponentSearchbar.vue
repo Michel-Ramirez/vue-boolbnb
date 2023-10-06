@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { store } from "../../data/store";
 import { router } from '../../router/index.js';
+import { useRouter } from 'vue-router';
 const distance = 20000
 const endpoint = `http://127.0.0.1:8000/api/houses/search`
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
@@ -39,13 +40,27 @@ export default {
             } else this.serviceSelected.push(id);
         },
 
-        sendFilter() {
-            axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-                store.resultCards = res.data;
-            })
-            const filterUrl = this.buildFilterUrl();
-            router.push(filterUrl);
-        },
+        // sendFilter() {
+        //     axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
+        //         store.resultCards = res.data;
+
+        //         // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
+        //         const router = useRouter();
+        //         router.push({
+        //             name: 'searchpage',
+        //             query: {
+        //                 city: this.searchCity,
+        //                 lat: this.lat,
+        //                 long: this.long,
+        //                 distance: this.distance_number,
+        //                 total_rooms: this.room_number,
+        //                 total_beds: this.beds_number,
+        //                 service: this.serviceSelected.join(',')
+        //             }
+        //         });
+        //     });
+        // },
+
         handleSearchCityInput() {
             // Clear Timeout (if exist) to avoid multiple call
             clearTimeout(this.debouncedFetchAddress);
@@ -204,7 +219,8 @@ export default {
 
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button @click="sendFilter()" type="button" class="btn-custom">Invia</button>
+                                <button data-bs-dismiss="offcanvas" @click="sendFilter()" type="button"
+                                    class="btn-custom">Invia</button>
 
                             </div>
                         </div>
