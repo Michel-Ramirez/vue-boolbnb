@@ -1,5 +1,7 @@
 <script>
+import axios from 'axios';
 import { store } from '../data/store';
+import { router } from '../router/index';
 import Searchbar from '../components/generals/ComponentSearchbar.vue';
 export default {
     name: 'SearchPage',
@@ -9,6 +11,24 @@ export default {
             store,
         };
     },
+    methods: {
+        getSearchResult() {
+            const { lat, long, distance } = this.$route.query;
+            axios
+                .get(`http://127.0.0.1:8000/api/houses/search?lat=${lat}&long=${long}&distance=${distance}&service=[]`)
+                .then((res) => {
+
+                    store.resultCards = res.data;
+
+                })
+                .catch()
+                .then(() => {
+                });
+        }
+    },
+    mounted() {
+        this.getSearchResult();
+    }
 }
 </script>
 <template>
