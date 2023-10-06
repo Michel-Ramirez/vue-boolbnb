@@ -12,5 +12,4 @@ export const store = reactive({
   showCards: false,
   lat: "",
   long: "",
-  filter: false,
 });

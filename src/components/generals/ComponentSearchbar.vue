@@ -11,12 +11,7 @@ export default {
     name: "ComponentSearchbar",
     data() {
         return {
-            room_number: '',
-            beds_number: '',
-            distance_number: '20000',
             searchCity: '',
-            services: [],
-            serviceSelected: [],
             houseFiltered: [],
             store,
             searchCity: "",
@@ -30,13 +25,6 @@ export default {
         }
     },
     methods: {
-        isSelect(id) {
-            if (this.serviceSelected.includes(id)) {
-                this.serviceSelected = this.serviceSelected.filter(function (item) {
-                    return item != id;
-                })
-            } else this.serviceSelected.push(id);
-        },
         handleSearchCityInput() {
             // Clear Timeout (if exist) to avoid multiple call
             clearTimeout(this.debouncedFetchAddress);
@@ -48,25 +36,25 @@ export default {
                 }
             }, 500);
         },
-        buildFilterUrl() {
-            const queryParams = {
+        // buildFilterUrl() {
+        // const queryParams = {
 
-                address: this.searchCity,  // Aggiungi la città all'URL
-                lat: this.lat,
-                long: this.long,
-                distance: this.distance_number,
-                total_rooms: this.room_number,
-                total_beds: this.beds_number,
-                service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
-            };
+        // address: this.searchCity,  // Aggiungi la città all'URL
+        // lat: this.lat,
+        // long: this.long,
+        // distance: this.distance_number,
+        // total_rooms: this.room_number,
+        // total_beds: this.beds_number,
+        // service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
+        // };
 
-            const queryString = Object.keys(queryParams)
-                .filter(key => queryParams[key] !== '')
-                .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
-                .join('&');
+        // const queryString = Object.keys(queryParams)
+        //     .filter(key => queryParams[key] !== '')
+        //     .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
+        //     .join('&');
 
-            return `/searchpage?${queryString}`;
-        },
+        // return `/searchpage?${queryString}`;
+        // },
         // sendFilter() {
         // Richiama getSearchResult per assicurarti che i dati siano aggiornati
 
@@ -133,10 +121,10 @@ export default {
         },
 
     },
-    created() {
-        axios.get(`http://127.0.0.1:8000/api/services`)
-            .then((res) => { this.services = res.data })
-    },
+    // created() {
+    // axios.get(`http://127.0.0.1:8000/api/services`)
+    //     .then((res) => { this.services = res.data })
+    // },
 };
 </script>
 
@@ -158,79 +146,9 @@ export default {
                 </li>
             </ul>
         </div>
-
-        <!-- BUTTON ACTIVATE OFFCANVAS -->
-        <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-            <i class="fa-solid fa-sliders"></i>
-        </button>
     </div>
 
     <!-- OFFCANVAS -->
-
-    <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
-        aria-labelledby="staticBackdropLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
-                Filtri
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <form>
-                <div class="row">
-                    <div class="col-5">
-                        <div class="mb-3">
-                            <label for="room_number_id" class="form-label">Stanze:</label>
-                            <input v-model="room_number" type="number" class="form-control" id="room_number_id">
-
-
-                        </div>
-                    </div>
-                    <div class="col-5">
-                        <div class="mb-3">
-                            <label for="beds_number_id" class="form-label">Posti letto:</label>
-                            <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-7">
-                        <div class="mb-3">
-                            <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
-                                ricercato</label>
-                            <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
-
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex">
-                    <div class="row me-5">
-                        <div class="col">
-                            <h6>Servizi della stanza</h6>
-                            <div class="form-check" v-for="service in services" :key="service.id">
-                                <input @click="isSelect(service.id)" class="form-check-input" type="checkbox">
-                                <label class="form-check-label"><i :class="service.icon"></i> {{
-                                    service.name }}
-                                </label>
-
-
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button data-bs-dismiss="offcanvas" @click="store.filter = true" type="button"
-                                    class="btn-custom">Invia</button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </template>
 
 <style lang="scss">
