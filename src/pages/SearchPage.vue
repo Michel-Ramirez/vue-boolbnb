@@ -9,19 +9,18 @@ export default {
     data() {
         return {
             store,
-            lat: "",
-            long: "",
             distance: "",
             isLoading: true,
         };
     },
     methods: {
         getSearchResult() {
-            this.lat = this.$route.query.lat;
-            this.long = this.$route.query.long;
+            store.address = this.$route.query.address;
+            store.lat = this.$route.query.lat;
+            store.long = this.$route.query.long;
             this.distance = this.$route.query.distance;
             axios
-                .get(`http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`)
+                .get(`http://127.0.0.1:8000/api/houses/search?lat=${store.lat}&long=${store.long}&distance=${this.distance}&service=[]`)
                 .then((res) => {
                     store.resultCards = res.data;
                 })
@@ -29,30 +28,36 @@ export default {
                     console.error(error);
                 });
         },
-        sendFilter() {
-            // Richiama getSearchResult per assicurarti che i dati siano aggiornati
-            this.getSearchResult();
 
-            // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
-            axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-                store.resultCards = res.data;
+        getCardsFiltered() {
+            const endpoint = `http://127.0.0.1:8000/api/houses/search`;
+            store.address = this.$route.query.address;
+            store.lat = this.$route.query.lat;
+            store.long = this.$route.query.long;
+            const { distance_number, room_number, beds_number, serviceSelected } = this.$route.query
 
-                // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
-                const router = useRouter();
-                router.push({
-                    name: 'searchpage',
-                    query: {
-                        city: this.searchCity,
-                        lat: this.lat,
-                        long: this.long,
-                        distance: this.distance_number,
-                        total_rooms: this.room_number,
-                        total_beds: this.beds_number,
-                        service: this.serviceSelected.join(',')
-                    }
+            if (!store.filter) {
+                axios.get(endpoint + `?lat=${store.lat}&long=${store.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
+                    store.resultCards = res.data;
+
+
+                    router.push({ name: 'searchpage' });
+
+                    router.push({
+                        name: 'searchpage',
+                        query: {
+                            address: store.address,
+                            lat: store.lat,
+                            long: store.long,
+                            distance: this.distance_number,
+                            total_rooms: this.room_number,
+                            total_beds: this.beds_number,
+                            service: this.serviceSelected.join(',')
+                        }
+                    });
                 });
-            });
-        },
+            }
+        }
     },
     created() {
         this.getSearchResult();

@@ -4,15 +4,13 @@ import { store } from "../../data/store";
 import { router } from '../../router/index.js';
 import { useRouter } from 'vue-router';
 const distance = 20000
-const endpoint = `http://127.0.0.1:8000/api/houses/search`
+const endpoint = `http://127.0.0.1:8000/api/houses/search`;
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
 
 export default {
     name: "ComponentSearchbar",
     data() {
         return {
-            lat: "",
-            long: "",
             room_number: '',
             beds_number: '',
             distance_number: '20000',
@@ -50,29 +48,49 @@ export default {
                 }
             }, 500);
         },
-        sendFilter() {
-            // Richiama getSearchResult per assicurarti che i dati siano aggiornati
+        buildFilterUrl() {
+            const queryParams = {
 
-            // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
-            axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-                store.resultCards = res.data;
+                address: this.searchCity,  // Aggiungi la città all'URL
+                lat: this.lat,
+                long: this.long,
+                distance: this.distance_number,
+                total_rooms: this.room_number,
+                total_beds: this.beds_number,
+                service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
+            };
 
-                // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
-                const router = useRouter();
-                router.push({
-                    name: 'searchpage',
-                    query: {
-                        city: this.searchCity,
-                        lat: this.lat,
-                        long: this.long,
-                        distance: this.distance_number,
-                        total_rooms: this.room_number,
-                        total_beds: this.beds_number,
-                        service: this.serviceSelected.join(',')
-                    }
-                });
-            });
+            const queryString = Object.keys(queryParams)
+                .filter(key => queryParams[key] !== '')
+                .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
+                .join('&');
+
+            return `/searchpage?${queryString}`;
         },
+        // sendFilter() {
+        // Richiama getSearchResult per assicurarti che i dati siano aggiornati
+
+        // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
+        // axios.get(endpoint + `?lat=${store.lat}&long=${store.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
+        //     store.resultCards = res.data;
+
+
+        //     router.push({ name: 'searchpage' });
+
+        //     router.push({
+        //         name: 'searchpage',
+        //         query: {
+        //             address: store.address,
+        //             lat: store.lat,
+        //             long: store.long,
+        //             distance: this.distance_number,
+        //             total_rooms: this.room_number,
+        //             total_beds: this.beds_number,
+        //             service: this.serviceSelected.join(',')
+        //         }
+        //     });
+        // });
+        // },
         fetchAddress() {
             this.searchResults = [];
             axios
@@ -106,31 +124,14 @@ export default {
             router.push({
                 name: 'searchpage',
                 query: {
-                    city: this.searchCity,
+                    address: this.searchCity,
                     lat: this.lat,
                     long: this.long,
                     distance: this.distance
                 }
             });
         },
-        buildFilterUrl() {
-            const queryParams = {
-                city: this.searchCity,  // Aggiungi la città all'URL
-                lat: this.lat,
-                long: this.long,
-                distance: this.distance_number,
-                total_rooms: this.room_number,
-                total_beds: this.beds_number,
-                service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
-            };
 
-            const queryString = Object.keys(queryParams)
-                .filter(key => queryParams[key] !== '')
-                .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
-                .join('&');
-
-            return `/searchpage?${queryString}`;
-        },
     },
     created() {
         axios.get(`http://127.0.0.1:8000/api/services`)
@@ -220,7 +221,7 @@ export default {
 
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button data-bs-dismiss="offcanvas" @click="sendFilter()" type="button"
+                                <button data-bs-dismiss="offcanvas" @click="store.filter = true" type="button"
                                     class="btn-custom">Invia</button>
 
                             </div>
