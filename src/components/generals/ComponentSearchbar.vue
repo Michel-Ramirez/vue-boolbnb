@@ -40,10 +40,30 @@ export default {
 
 
         },
+        buildFilterUrl() {
+            const queryParams = {
+                city: this.searchCity,  // Aggiungi la città all'URL
+                lat: this.lat,
+                long: this.long,
+                distance: this.distance_number,
+                total_rooms: this.room_number,
+                total_beds: this.beds_number,
+                service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
+            };
+
+            const queryString = Object.keys(queryParams)
+                .filter(key => queryParams[key] !== '')
+                .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
+                .join('&');
+
+            return `/searchpage?${queryString}`;
+        },
         sendFilter() {
             axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
                 store.resultCards = res.data;
             })
+            const filterUrl = this.buildFilterUrl();
+            router.push(filterUrl);
         },
         handleSearchCityInput() {
             // Clear Timeout (if exist) to avoid multiple call
@@ -96,7 +116,11 @@ export default {
                 .then(() => {
                 });
             router.push({ name: 'searchpage' });
-
+            store.isLoading = false;
+            router.push({
+                name: 'searchpage',
+                query: { city: this.searchCity }
+            });
         },
     },
     created() {

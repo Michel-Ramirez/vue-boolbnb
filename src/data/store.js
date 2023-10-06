@@ -10,4 +10,6 @@ export const store = reactive({
   isLoading: false,
   resultCards: [],
   showCards: false,
+  lat: "",
+  long: "",
 });

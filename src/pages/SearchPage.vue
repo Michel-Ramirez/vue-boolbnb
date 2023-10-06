@@ -1,7 +1,9 @@
 <script>
 import { store } from '../data/store';
+import Searchbar from '../components/generals/ComponentSearchbar.vue';
 export default {
     name: 'SearchPage',
+    components: { Searchbar },
     data() {
         return {
             store,
@@ -11,7 +13,10 @@ export default {
 </script>
 <template>
     <!-- <AppLoader v-if="isLoading" /> -->
-    <section class="container-sm container-xxl mt-5">
+    <section class="container-sm container-xxl mt-5 d-flex flex-column align-items-center">
+        <div class="my-5">
+            <Searchbar />
+        </div>
         <div v-if="!store.resultCards.length">
             <h5 class="text-center">Siamo spiacenti non ci sono appartamenti in questa località</h5>
         </div>
@@ -26,9 +31,9 @@ export default {
     </section>
 </template>
 <style lang="scss" scoped>
-.offcanvas.offcanvas-start {
-    width: 100%;
-}
+// .offcanvas.offcanvas-start {
+//     width: 100%;
+// }
 
 .search-result {
     display: flex;
