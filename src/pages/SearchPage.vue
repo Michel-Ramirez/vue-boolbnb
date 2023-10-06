@@ -16,24 +16,26 @@ export default {
         };
     },
     methods: {
-        async getSearchResult() {
+        getSearchResult() {
             this.lat = this.$route.query.lat;
             this.long = this.$route.query.long;
             this.distance = this.$route.query.distance;
-            try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`);
-                store.resultCards = response.data;
-            } catch (error) {
-                console.error(error);
-            }
+            axios
+                .get(`http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`)
+                .then((res) => {
+                    store.resultCards = res.data;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-        async sendFilter() {
-            await this.getSearchResult(); // Attendiamo il completamento di getSearchResult
+        sendFilter() {
+            // Richiama getSearchResult per assicurarti che i dati siano aggiornati
+            this.getSearchResult();
 
             // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
-            try {
-                const response = await axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`);
-                store.resultCards = response.data;
+            axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
+                store.resultCards = res.data;
 
                 // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
                 const router = useRouter();
@@ -49,13 +51,11 @@ export default {
                         service: this.serviceSelected.join(',')
                     }
                 });
-            } catch (error) {
-                console.error(error);
-            }
+            });
         },
     },
-    async created() {
-        await this.getSearchResult(); // Attendiamo il completamento di getSearchResult
+    created() {
+        this.getSearchResult();
         this.isLoading = false;
     }
 
@@ -81,10 +81,6 @@ export default {
     </section>
 </template>
 <style lang="scss" scoped>
-// .offcanvas.offcanvas-start {
-//     width: 100%;
-// }
-
 .search-result {
     display: flex;
     gap: 20px;
