@@ -105,10 +105,10 @@ export default {
             this.isSelected = true;
             store.showCards = true;
 
-            store.isLoading = true;
+            this.isLoading = true;
 
             router.push({ name: 'searchpage' });
-            store.isLoading = false;
+            this.isLoading = false;
             router.push({
                 name: 'searchpage',
                 query: {
@@ -129,7 +129,7 @@ export default {
 </script>
 
 <template>
-    <AppLoader v-if="store.isLoading" />
+    <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">

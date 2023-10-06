@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", name: "home", component: HomePage },
-    { path: "/boolbnb/search", name: "searchpage", component: SearchPage },
+    { path: "/search", name: "searchpage", component: SearchPage },
 
     // { path: "/not-found", name: "not-found", component: NotFoundPage },
     // { path: "/:pathMatch(.*)*", redirect: "/not-found" },

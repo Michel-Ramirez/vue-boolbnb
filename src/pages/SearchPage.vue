@@ -11,7 +11,7 @@ export default {
         return {
             store,
             distance: "",
-            isLoading: true,
+            isLoading: false,
             room_number: '',
             beds_number: '',
             services: [],
@@ -32,6 +32,7 @@ export default {
             store.lat = this.$route.query.lat;
             store.long = this.$route.query.long;
             this.distance = this.$route.query.distance;
+            this.isLoading = true;
             axios
                 .get(`http://127.0.0.1:8000/api/houses/search?lat=${store.lat}&long=${store.long}&distance=${this.distance}&service=[]`)
                 .then((res) => {
@@ -39,7 +40,7 @@ export default {
                 })
                 .catch((error) => {
                     console.error(error);
-                });
+                }).then(() => { this.isLoading = false });
         },
 
         getCardsFiltered() {
@@ -75,16 +76,15 @@ export default {
     created() {
         this.getCardsFiltered();
         this.getSearchResult();
-        this.isLoading = false;
         axios.get(`http://127.0.0.1:8000/api/services`)
             .then((res) => { this.services = res.data })
-    }
+    },
 
 }
 </script>
 <template>
     <AppLoader v-if="isLoading" />
-    <section class="container-sm container-xxl mt-5 d-flex flex-column align-items-center">
+    <section v-else class="container-sm container-xxl mt-5 d-flex flex-column align-items-center">
         <div class="my-5 d-flex ">
             <Searchbar />
             <!-- BUTTON ACTIVATE OFFCANVAS -->
