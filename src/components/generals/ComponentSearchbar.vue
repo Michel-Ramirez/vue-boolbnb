@@ -39,28 +39,6 @@ export default {
                 })
             } else this.serviceSelected.push(id);
         },
-
-        // sendFilter() {
-        //     axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-        //         store.resultCards = res.data;
-
-        //         // Aggiungi i parametri desiderati all'URL e naviga alla pagina di ricerca
-        //         const router = useRouter();
-        //         router.push({
-        //             name: 'searchpage',
-        //             query: {
-        //                 city: this.searchCity,
-        //                 lat: this.lat,
-        //                 long: this.long,
-        //                 distance: this.distance_number,
-        //                 total_rooms: this.room_number,
-        //                 total_beds: this.beds_number,
-        //                 service: this.serviceSelected.join(',')
-        //             }
-        //         });
-        //     });
-        // },
-
         handleSearchCityInput() {
             // Clear Timeout (if exist) to avoid multiple call
             clearTimeout(this.debouncedFetchAddress);
