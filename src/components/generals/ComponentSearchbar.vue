@@ -21,6 +21,8 @@ export default {
             isLoading: false,
             debouncedFetchAddress: null,
             isClicked: false,
+            lat: "",
+            long: "",
         }
     },
     methods: {
@@ -139,6 +141,10 @@ export default {
 
     .list-group {
         border-radius: 5px;
+        position: absolute;
+        bottom: -10;
+        left: 0;
+        right: 0;
 
         .list-group-item {
             cursor: pointer;

@@ -7,7 +7,17 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", name: "home", component: HomePage },
-    { path: "/search", name: "searchpage", component: SearchPage },
+    {
+      path: "/search",
+      name: "searchpage",
+      component: SearchPage,
+      beforeRouteUpdate(to, from, next) {
+        // Questo hook verrà chiamato quando l'URL cambia
+        console.log("to:", to.fullPath);
+        console.log("from", from.fullPath);
+        next();
+      },
+    },
     {
       path: "/house/:id",
       name: "house-detail",
