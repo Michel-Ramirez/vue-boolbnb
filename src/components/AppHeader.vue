@@ -21,14 +21,14 @@ export default {
                         <i class=" fa-solid fa-circle-user"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Accedi</a></li>
-                        <li><a class="dropdown-item" href="#">Registrati</a></li>
+                        <li><a class="dropdown-item" href="http://127.0.0.1:8000/login">Accedi</a></li>
+                        <li><a class="dropdown-item" href="http://127.0.0.1:8000/register">Registrati</a></li>
                     </ul>
                 </div>
                 <!-- bottone per il login e sing in -->
                 <div class="log-button">
-                    <a class="btn-custom" href="">Accedi</a>
-                    <a class="btn-custom" href="">Registrati</a>
+                    <a class="btn-custom" href="http://127.0.0.1:8000/login">Accedi</a>
+                    <a class="btn-custom" href="http://127.0.0.1:8000/register">Registrati</a>
                 </div>
             </div>
         </div>
