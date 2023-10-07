@@ -11,25 +11,11 @@ export default {
     data() {
         return {
             store,
-            autoPlay: null,
-            currentIndex: 0,
             evidenceHouses: [],
             isLoading: false,
         }
     },
     methods: {
-        gotoNext() {
-
-            if (this.currentIndex === store.jumboCarousel.length - 1) {
-                this.currentIndex = 0;
-            } else {
-                this.currentIndex++;
-            }
-        },
-        startAutoplay() {
-            autoPlay = setInterval(this.gotoNext, 5000);
-
-        },
         fetchEvidenceHouses() {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
@@ -41,7 +27,6 @@ export default {
         }
     },
     mounted() {
-        store.isSearching = false;
         this.fetchEvidenceHouses();
         this.autoPlay = setInterval(this.gotoNext, 5000);
     }
@@ -60,7 +45,7 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-        <div v-if="!store.isSearching">
+        <div>
             <section class="featured py-5">
                 <h3 class="my-5">In evidenza</h3>
                 <div class="container">

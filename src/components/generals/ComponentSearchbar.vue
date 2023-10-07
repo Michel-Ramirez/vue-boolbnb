@@ -11,7 +11,6 @@ export default {
     name: "ComponentSearchbar",
     data() {
         return {
-            searchCity: '',
             houseFiltered: [],
             store,
             searchCity: "",
@@ -36,49 +35,6 @@ export default {
                 }
             }, 500);
         },
-        // buildFilterUrl() {
-        // const queryParams = {
-
-        // address: this.searchCity,  // Aggiungi la città all'URL
-        // lat: this.lat,
-        // long: this.long,
-        // distance: this.distance_number,
-        // total_rooms: this.room_number,
-        // total_beds: this.beds_number,
-        // service: this.serviceSelected.join(','), // Unisci gli ID dei servizi selezionati con una virgola
-        // };
-
-        // const queryString = Object.keys(queryParams)
-        //     .filter(key => queryParams[key] !== '')
-        //     .map(key => `${key} = ${encodeURIComponent(queryParams[key])}`)
-        //     .join('&');
-
-        // return `/searchpage?${queryString}`;
-        // },
-        // sendFilter() {
-        // Richiama getSearchResult per assicurarti che i dati siano aggiornati
-
-        // Ora puoi utilizzare this.lat e this.long nella tua richiesta Axios
-        // axios.get(endpoint + `?lat=${store.lat}&long=${store.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-        //     store.resultCards = res.data;
-
-
-        //     router.push({ name: 'searchpage' });
-
-        //     router.push({
-        //         name: 'searchpage',
-        //         query: {
-        //             address: store.address,
-        //             lat: store.lat,
-        //             long: store.long,
-        //             distance: this.distance_number,
-        //             total_rooms: this.room_number,
-        //             total_beds: this.beds_number,
-        //             service: this.serviceSelected.join(',')
-        //         }
-        //     });
-        // });
-        // },
         fetchAddress() {
             this.searchResults = [];
             axios
@@ -121,10 +77,6 @@ export default {
         },
 
     },
-    // created() {
-    // axios.get(`http://127.0.0.1:8000/api/services`)
-    //     .then((res) => { this.services = res.data })
-    // },
 };
 </script>
 
@@ -133,8 +85,7 @@ export default {
     <div class="wrapper-search d-flex">
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">
-                <input v-model.trim="searchCity" type="text" class="form-control"
-                    placeholder="Cerca una città o indirizzo completo" />
+                <input v-model.trim="searchCity" type="text" class="form-control" placeholder="Cerca la tua destinazione" />
                 <button class="btn btn-search bg-white" type="submit">
                     <i class="fa-solid fa-magnifying-glass-location"></i>
                 </button>

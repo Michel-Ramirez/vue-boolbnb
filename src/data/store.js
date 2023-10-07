@@ -12,4 +12,7 @@ export const store = reactive({
   showCards: false,
   lat: "",
   long: "",
+  room_number: "",
+  beds_number: "",
+  distance_number: "20000",
 });

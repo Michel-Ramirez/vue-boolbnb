@@ -84,14 +84,18 @@ export default {
 </script>
 <template>
     <AppLoader v-if="isLoading" />
-    <section v-else class="container-sm container-xxl mt-5 d-flex flex-column align-items-center">
-        <div class="my-5 d-flex ">
-            <Searchbar />
-            <!-- BUTTON ACTIVATE OFFCANVAS -->
-            <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-                <i class="fa-solid fa-sliders"></i>
-            </button>
+    <section v-else class="container-sm container-xxl d-flex flex-column align-items-center">
+
+        <div class="jumbo-search">
+            <h1 class="mb-5 text-center ">Cerca la tua destinazione, incomincia il tuo viaggio</h1>
+            <div class="d-flex align-items-center">
+                <Searchbar />
+                <!-- BUTTON ACTIVATE OFFCANVAS -->
+                <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
+            </div>
         </div>
 
         <!-- OFFCANVAS -->
@@ -111,16 +115,12 @@ export default {
                             <div class="mb-3">
                                 <label for="room_number_id" class="form-label">Stanze:</label>
                                 <input v-model="room_number" type="number" class="form-control" id="room_number_id">
-
-
                             </div>
                         </div>
                         <div class="col-5">
                             <div class="mb-3">
                                 <label for="beds_number_id" class="form-label">Posti letto:</label>
                                 <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
-
-
                             </div>
                         </div>
                     </div>
@@ -130,9 +130,6 @@ export default {
                                 <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
                                     ricercato</label>
                                 <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
-
-
-
                             </div>
                         </div>
                     </div>
@@ -141,17 +138,15 @@ export default {
                             <div class="col">
                                 <h6>Servizi della stanza</h6>
                                 <div class="form-check" v-for="service in services" :key="service.id">
-                                    <input @click="isSelect(service.id)" class="form-check-input" type="checkbox">
-                                    <label class="form-check-label"><i :class="service.icon"></i> {{
+                                    <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
+                                        :id="service.id">
+                                    <label class="form-check-label" :for="service.id"><i :class="service.icon"></i> {{
                                         service.name }}
                                     </label>
-
-
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
                                         class="btn-custom">Invia</button>
-
                                 </div>
                             </div>
                         </div>
@@ -164,19 +159,86 @@ export default {
         <div v-if="!store.resultCards.length">
             <h5 class="text-center">Siamo spiacenti non ci sono appartamenti in questa località</h5>
         </div>
-        <div v-else class="row">
+        <div v-else class="row wrapper-result">
             <div class="col-4 sidebar">
                 <h4>FILTRI</h4>
+                <form>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="room_number_id" class="form-label">Stanze:</label>
+                                <input v-model="room_number" type="number" class="form-control" id="room_number_id">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="beds_number_id" class="form-label">Posti letto:</label>
+                                <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="mb-3">
+                                <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
+                                    ricercato</label>
+                                <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="row me-5">
+                            <div class="col">
+                                <h6>Servizi della stanza</h6>
+                                <div class="form-check" v-for="service in  services " :key="service.id">
+                                    <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
+                                        :id="'side-' + service.id">
+                                    <label class="form-check-label" :for="'side-' + service.id"><i
+                                            :class="service.icon"></i> {{
+                                                service.name }}
+                                    </label>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
+                                        class="btn-custom">Invia</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="col-8 search-result">
-                <HouseCard v-for="house in store.resultCards" :key="house.id" :house="house" />
+                <HouseCard v-for=" house  in  store.resultCards " :key="house.id" :house="house" />
             </div>
         </div>
     </section>
 </template>
 <style lang="scss" scoped>
+.container-sm {
+    .jumbo-search {
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+.wrapper-result {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+
+.sidebar {
+    display: none;
+}
+
 .search-result {
     display: flex;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
 }
