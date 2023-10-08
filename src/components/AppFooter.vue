@@ -7,7 +7,7 @@ export default {
         <h3 class="text-center py-5">Creatori</h3>
         <div class="container d-flex justify-content-center flex-column">
             <div class="row d-flex justify-content-center mb-5">
-                <div class="col-3"></div>
+                <div class="col-sm-2 col-xl-3"></div>
                 <div class="col-4">
                     <h4>Frontend</h4>
                     <div>
