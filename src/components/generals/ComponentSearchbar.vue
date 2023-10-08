@@ -1,49 +1,39 @@
 <script>
 import axios from 'axios';
-const distance = 20000
-const endpoint = `http://127.0.0.1:8000/api/houses/search`
 import { store } from "../../data/store";
+import { router } from '../../router/index.js';
+import { useRouter } from 'vue-router';
+const endpoint = `http://127.0.0.1:8000/api/houses/search`;
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
+
 export default {
     name: "ComponentSearchbar",
+    props: { address: String },
     data() {
         return {
-            lat: "",
-            long: "",
-            room_number: '',
-            beds_number: '',
-            distance_number: '20000',
-            searchCity: '',
-            services: [],
-            serviceSelected: [],
             houseFiltered: [],
             store,
-            searchCity: "",
+            searchCity: this.address,
             searchResults: [],
             currentIndex: "",
             isSelected: false,
-            distance: "20000",
             isLoading: false,
             debouncedFetchAddress: null,
             isClicked: false,
+            lat: "",
+            long: "",
+            showSelectionMessage: false,
         }
     },
+    computed: {
+
+    },
     methods: {
-        isSelect(id) {
-            if (this.serviceSelected.includes(id)) {
-                this.serviceSelected = this.serviceSelected.filter(function (item) {
-                    return item != id;
-                })
-            } else this.serviceSelected.push(id);
-
-
-        },
-        sendFilter() {
-            axios.get(endpoint + `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`).then((res) => {
-                store.resultCards = res.data;
-            })
-        },
         handleSearchCityInput() {
+
+            if (!this.isSelected) {
+                this.showSelectionMessage = true;
+            };
             // Clear Timeout (if exist) to avoid multiple call
             clearTimeout(this.debouncedFetchAddress);
 
@@ -61,7 +51,6 @@ export default {
                     `https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`
                 )
                 .then((res) => {
-                    // console.log(res.data.results);
                     this.isSelected = false;
                     if (this.searchResults.length) this.searchResults = [];
                     const results = res.data.results;
@@ -74,6 +63,8 @@ export default {
                 .then();
         },
         getCoordinates(targetIndex) {
+            this.showSelectionMessage = false;
+
             this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
             this.lat = this.searchResults[targetIndex].position.lat;
             this.long = this.searchResults[targetIndex].position.lon;
@@ -81,36 +72,33 @@ export default {
             store.showCards = true;
 
             this.isLoading = true;
-            axios
-                .get(
-                    `http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`
-                )
-                .then((res) => {
 
-                    store.resultCards = res.data;
-
-                })
-                .catch()
-                .then(() => {
-                    this.isLoading = false;
-                });
-            store.isSearching = true;
+            router.push({ name: 'searchpage' });
+            this.isLoading = false;
+            router.push({
+                name: 'searchpage',
+                query: {
+                    address: this.searchCity,
+                    lat: this.lat,
+                    long: this.long,
+                }
+            });
         },
-    },
-    created() {
-        axios.get(`http://127.0.0.1:8000/api/services`)
-            .then((res) => { this.services = res.data })
+
     },
 };
 </script>
 
 <template>
     <AppLoader v-if="isLoading" />
-    <div class="wrapper-search d-flex">
+    <div class="wrapper-search d-flex flex-column ">
+        <div v-if="showSelectionMessage" class="alert alert-info mb-5">
+            <i class="fa-solid fa-house-circle-exclamation fa-bounce fa-xl me-3" style="color: #25dd85;"></i>
+            <strong>Seleziona uno dei suggerimenti</strong>
+        </div>
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">
-                <input v-model.trim="searchCity" type="text" class="form-control"
-                    placeholder="Cerca una città o indirizzo completo" />
+                <input v-model.trim="searchCity" type="text" class="form-control" placeholder="Cerca la tua destinazione" />
                 <button class="btn btn-search bg-white" type="submit">
                     <i class="fa-solid fa-magnifying-glass-location"></i>
                 </button>
@@ -122,78 +110,9 @@ export default {
                 </li>
             </ul>
         </div>
-
-        <!-- BUTTON ACTIVATE OFFCANVAS -->
-        <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-            <i class="fa-solid fa-sliders"></i>
-        </button>
     </div>
 
     <!-- OFFCANVAS -->
-
-    <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
-        aria-labelledby="staticBackdropLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
-                Filtri
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <form>
-                <div class="row">
-                    <div class="col-5">
-                        <div class="mb-3">
-                            <label for="room_number_id" class="form-label">Stanze:</label>
-                            <input v-model="room_number" type="number" class="form-control" id="room_number_id">
-
-
-                        </div>
-                    </div>
-                    <div class="col-5">
-                        <div class="mb-3">
-                            <label for="beds_number_id" class="form-label">Posti letto:</label>
-                            <input v-model="beds_number" type="number" class="form-control" id="beds_number_id">
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-7">
-                        <div class="mb-3">
-                            <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
-                                ricercato</label>
-                            <input v-model="distance_number" type="number" class="form-control" id="distance_number_id">
-
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex">
-                    <div class="row me-5">
-                        <div class="col">
-                            <h6>Servizi della stanza</h6>
-                            <div class="form-check" v-for="service in services" :key="service.id">
-                                <input @click="isSelect(service.id)" class="form-check-input" type="checkbox">
-                                <label class="form-check-label"><i :class="service.icon"></i> {{
-                                    service.name }}
-                                </label>
-
-
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button data-bs-dismiss="offcanvas" @click="sendFilter()" type="button"
-                                    class="btn-custom">Invia</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </template>
 
 <style lang="scss">
@@ -233,6 +152,10 @@ export default {
 
     .list-group {
         border-radius: 5px;
+        position: absolute;
+        bottom: -10;
+        left: 0;
+        right: 0;
 
         .list-group-item {
             cursor: pointer;

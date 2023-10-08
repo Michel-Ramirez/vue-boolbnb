@@ -15,24 +15,22 @@
     gap: 20px;
   }
 
-  .jumbotron {
-    .search-bar {
-      width: 500px;
+  .search-bar {
+    width: 500px;
+  }
+
+  .form-control {
+    font-size: 1rem;
+    height: 45px;
+  }
+
+  .home-title {
+    h1 {
+      font-size: 4rem;
     }
 
-    .form-control {
-      font-size: 1rem;
-      height: 45px;
-    }
-
-    .home-title {
-      h1 {
-        font-size: 4rem;
-      }
-
-      h3 {
-        font-size: 2rem;
-      }
+    h3 {
+      font-size: 2rem;
     }
   }
 
@@ -77,6 +75,15 @@
       h3 {
         font-size: 3rem;
       }
+    }
+  }
+
+  .container-xxl .wrapper-result {
+    .sidebar {
+      display: block;
+    }
+    .search-result {
+      justify-content: start;
     }
   }
 
