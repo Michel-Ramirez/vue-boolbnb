@@ -3,7 +3,8 @@
 import axios from 'axios';
 import ComponentSearchbar from '../components/generals/ComponentSearchbar.vue';
 import { store } from '../data/store';
-import 'animate.css';
+// import 'animate.css';
+import SearchPage from '../components/generals/SearchPage.vue';
 const endpoint = 'http://127.0.0.1:8000/api/houses/';
 export default {
     components: { ComponentSearchbar },
