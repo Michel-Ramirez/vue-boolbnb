@@ -20,11 +20,12 @@ export default {
             this.isLoading = true;
             axios.get(endpoint).then(res => {
                 this.evidenceHouses = res.data.data;
-                // console.log(res.data)
+
+                // console.log(this.evidenceHouses)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
-        }
+        },
     },
     mounted() {
         this.fetchEvidenceHouses();

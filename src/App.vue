@@ -1,6 +1,7 @@
 <script>
+import AppFooter from './components/AppFooter.vue';
 export default {
-  name: 'SearchPage',
+  components: { AppFooter }
 }
 </script>
 
@@ -9,4 +10,5 @@ export default {
   <main>
     <RouterView />
   </main>
+  <AppFooter />
 </template>
