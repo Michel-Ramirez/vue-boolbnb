@@ -94,7 +94,7 @@ export default {
 </script>
 <template>
     <AppLoader v-if="isLoading" />
-    <section v-else class="container-sm container-xxl d-flex flex-column align-items-center">
+    <section v-else class="container-sm container-xxl d-flex flex-column align-items-center mb-5">
         <div class="jumbo-search">
             <h1 class="mb-5 text-center">
                 Cerca la tua destinazione, incomincia il tuo viaggio
