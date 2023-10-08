@@ -18,7 +18,7 @@ export default {
                     <span>bagni {{ house.total_bath }}</span> |
                     <span>mq {{ house.mq }}</span>
                 </div>
-                <div>{{ house.address.home_address }}</div>
+                <!-- <div>{{ house.address.home_address }}</div> -->
                 <!-- <p class="address m-0">{{ house.address.home_address }}</p> -->
                 <div><strong>{{ house.night_price }} /Notte</strong></div>
             </div>
