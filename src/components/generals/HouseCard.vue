@@ -18,8 +18,8 @@ export default {
                     <span>bagni {{ house.total_bath }}</span> |
                     <span>mq {{ house.mq }}</span>
                 </div>
-                <!-- <div>{{ house.address.home_address }}</div> -->
-                <!-- <p class="address m-0">{{ house.address.home_address }}</p> -->
+                <div v-if="house.home_address">{{ house.home_address }}</div>
+                <div v-else class="address m-0">{{ house.address.home_address }}</div>
                 <div><strong>{{ house.night_price }} /Notte</strong></div>
             </div>
         </div>

@@ -3,37 +3,42 @@ import axios from "axios";
 import { store } from "../data/store";
 import { router } from "../router/index";
 import Searchbar from "../components/generals/ComponentSearchbar.vue";
+import { resolveTransitionHooks } from "vue";
 export default {
     name: "SearchPage",
     components: { Searchbar },
     watch: {
         $route(to, from) {
             // Gestisci qui i cambiamenti dell'URL
+
             if (to.fullPath !== from.fullPath) {
-                if (!this.serviceSelected.length) {
-                    this.getSearchResult();
-                } else {
-                    this.getCardsFiltered();
-                }
+                this.getCardsFiltered();
+
             }
         },
     },
     data() {
         return {
             store,
-            distance: "",
             isLoading: false,
+            distance_default_meter: "20000",
             room_number: "",
             beds_number: "",
-            services: [],
+            distance_km: "20",
             serviceSelected: [],
-            distance_number: "20000",
+            services: [],
             lat: "",
             long: "",
             address: "",
         };
     },
     methods: {
+        reset() {
+            this.distance_km = "20";
+            this.room_number = "";
+            this.beds_number = "";
+            this.serviceSelected = [];
+        },
         isSelect(id) {
             if (this.serviceSelected.includes(id)) {
                 this.serviceSelected = this.serviceSelected.filter(function (item) {
@@ -41,51 +46,20 @@ export default {
                 });
             } else this.serviceSelected.push(id);
         },
-        getSearchResult() {
-            this.address = this.$route.query.address;
-            this.lat = this.$route.query.lat;
-            this.long = this.$route.query.long;
-            this.distance = this.$route.query.distance;
-            this.isLoading = true;
-            axios
-                .get(
-                    `http://127.0.0.1:8000/api/houses/search?lat=${this.lat}&long=${this.long}&distance=${this.distance}&service=[]`
-                )
-                .then((res) => {
-                    store.resultCards = res.data;
-                    router.push({
-                        name: "searchpage",
-                        query: {
-                            address: this.address,
-                            lat: this.lat,
-                            long: this.long,
-                            distance: this.distance_number,
-                            total_rooms: this.room_number,
-                            total_beds: this.beds_number,
-                            service: this.serviceSelected.join(","),
-                        },
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .then(() => {
-                    this.isLoading = false;
-                });
-        },
-
         getCardsFiltered() {
+            this.isLoading = true;
             const endpoint = `http://127.0.0.1:8000/api/houses/search`;
             this.address = this.$route.query.address;
             this.lat = this.$route.query.lat;
             this.long = this.$route.query.long;
-            const { distance_number, room_number, beds_number, serviceSelected } =
-                this.$route.query;
+
+            // TRASFORMO IL INPUT DEL UTENTE DA KM IN METRI
+            const distance_meters = parseFloat(this.distance_km) * 1000;
 
             axios
                 .get(
                     endpoint +
-                    `?lat=${this.lat}&long=${this.long}&distance=${this.distance_number}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`
+                    `?lat=${this.lat}&long=${this.long}&distance=${distance_meters}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`
                 )
                 .then((res) => {
                     store.resultCards = res.data;
@@ -96,7 +70,7 @@ export default {
                             address: this.address,
                             lat: this.lat,
                             long: this.long,
-                            distance: this.distance_number,
+                            distance: distance_meters,
                             total_rooms: this.room_number,
                             total_beds: this.beds_number,
                             service: this.serviceSelected.join(","),
@@ -105,11 +79,13 @@ export default {
                 })
                 .catch((err) => {
                     console.error(err);
-                });
+                }).then(() => {
+                    this.isLoading = false;
+                });;
         },
     },
     created() {
-        this.getSearchResult();
+        this.getCardsFiltered();
         axios.get(`http://127.0.0.1:8000/api/services`).then((res) => {
             this.services = res.data;
         });
@@ -124,7 +100,7 @@ export default {
                 Cerca la tua destinazione, incomincia il tuo viaggio
             </h1>
             <div class="d-flex align-items-center">
-                <Searchbar />
+                <Searchbar :address="address" />
                 <!-- BUTTON ACTIVATE OFFCANVAS -->
                 <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
@@ -164,8 +140,7 @@ export default {
                             <div class="mb-3">
                                 <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
                                     ricercato</label>
-                                <input v-model="distance_number" type="number" class="form-control"
-                                    id="distance_number_id" />
+                                <input v-model="distance_km" type="number" class="form-control" id="distance_number_id" />
                             </div>
                         </div>
                     </div>
@@ -183,7 +158,7 @@ export default {
                             </div>
                         </div>
                         <div class="d-flex justify-content-center my-5">
-                            <button @click="getSearchResult()" type="reset" class="btn-custom me-3">
+                            <button @click="reset()" type="button" class="btn-custom me-3">
                                 Reset
                             </button>
                             <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
@@ -195,7 +170,6 @@ export default {
                 </form>
             </div>
         </div>
-
 
         <!-- RESULT IN SEARCH PAGE -->
 
@@ -225,9 +199,9 @@ export default {
                         <div class="row">
                             <div class="col-7">
                                 <div class="mb-3">
-                                    <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
+                                    <label for="distance_number_id" class="form-label">Distanza in Km dal indirizzo
                                         ricercato</label>
-                                    <input v-model="distance_number" type="number" class="form-control"
+                                    <input v-model="distance_km" type="number" class="form-control"
                                         id="distance_number_id" />
                                 </div>
                             </div>
@@ -244,7 +218,7 @@ export default {
                                         </label>
                                     </div>
                                     <div class="d-flex justify-content-end my-5">
-                                        <button @click="getSearchResult()" type="reset" class="btn-custom me-3">
+                                        <button @click="reset()" type="button" class="btn-custom me-3">
                                             Reset
                                         </button>
                                         <button @click="getCardsFiltered()" type="button" class="btn-custom">
@@ -259,7 +233,7 @@ export default {
                 <div class="col-12 col-lg-8 search-result" :class="{ 'justify-content-center': !store.resultCards.length }">
                     <div v-if="!store.resultCards.length"
                         class="d-flex flex-column align-items-center justify-content-center">
-                        <i class="fa-solid fa-house-circle-xmark fa-2xl mb-5" style="color: #25dd85"></i>
+                        <i class="fa-solid fa-house-circle-xmark fa-shake fa-2xl mb-5" style="color: red"></i>
                         <h5 class="text-center">
                             Siamo spiacenti non abbiamo trovato quello che cercavi
                         </h5>

@@ -3,30 +3,37 @@ import axios from 'axios';
 import { store } from "../../data/store";
 import { router } from '../../router/index.js';
 import { useRouter } from 'vue-router';
-const distance = 20000
 const endpoint = `http://127.0.0.1:8000/api/houses/search`;
 const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
 
 export default {
     name: "ComponentSearchbar",
+    props: { address: String },
     data() {
         return {
             houseFiltered: [],
             store,
-            searchCity: "",
+            searchCity: this.address,
             searchResults: [],
             currentIndex: "",
             isSelected: false,
-            distance: "20000",
             isLoading: false,
             debouncedFetchAddress: null,
             isClicked: false,
             lat: "",
             long: "",
+            showSelectionMessage: false,
         }
+    },
+    computed: {
+
     },
     methods: {
         handleSearchCityInput() {
+
+            if (!this.isSelected) {
+                this.showSelectionMessage = true;
+            };
             // Clear Timeout (if exist) to avoid multiple call
             clearTimeout(this.debouncedFetchAddress);
 
@@ -44,7 +51,6 @@ export default {
                     `https://api.tomtom.com/search/2/search/${this.searchCity}.json?limit=5&countrySet=IT&extendedPostalCodesFor=Addr&view=Unified&${tomtomApiKey}`
                 )
                 .then((res) => {
-                    // console.log(res.data.results);
                     this.isSelected = false;
                     if (this.searchResults.length) this.searchResults = [];
                     const results = res.data.results;
@@ -57,6 +63,8 @@ export default {
                 .then();
         },
         getCoordinates(targetIndex) {
+            this.showSelectionMessage = false;
+
             this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
             this.lat = this.searchResults[targetIndex].position.lat;
             this.long = this.searchResults[targetIndex].position.lon;
@@ -73,7 +81,6 @@ export default {
                     address: this.searchCity,
                     lat: this.lat,
                     long: this.long,
-                    distance: this.distance
                 }
             });
         },
@@ -84,7 +91,11 @@ export default {
 
 <template>
     <AppLoader v-if="isLoading" />
-    <div class="wrapper-search d-flex">
+    <div class="wrapper-search d-flex flex-column ">
+        <div v-if="showSelectionMessage" class="alert alert-info mb-5">
+            <i class="fa-solid fa-house-circle-exclamation fa-bounce fa-xl me-3" style="color: #25dd85;"></i>
+            <strong>Seleziona uno dei suggerimenti</strong>
+        </div>
         <div class="search-bar me-3">
             <form @keyup.prevent="handleSearchCityInput">
                 <input v-model.trim="searchCity" type="text" class="form-control" placeholder="Cerca la tua destinazione" />
