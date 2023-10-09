@@ -14,14 +14,37 @@ export default {
             const houseId = this.$route.params.id;
             axios.get(endpoint + houseId).then((res) => {
                 this.houseData.push(res.data);
-                console.log(this.houseData)
+
+                // console.log(this.houseData[0].address.latitude, this.houseData[0].address.longitude);
             }).catch().then(() => { this.isLoading = false; });
+        },
+        mapTimeOut() {
+            const timeOut = setTimeout(() => {
+                this.fetchMap();
+            }, 200);
+        },
+        fetchMap() {
+            let lat = this.houseData[0].address.latitude;
+            let long = this.houseData[0].address.longitude;
+
+            let center = [long, lat];
+
+            const map = tt.map({
+                key: 'soH7vSRFYTpCT37GOm8wEimPoDyc3GMe',
+                container: "map",
+                center: center,
+                zoom: 15
+            })
+            map.on('load', () => {
+                new tt.Marker().setLngLat(center).addTo(map)
+            })
         }
     },
-    created() {
+    mounted() {
         this.fetchData();
-    },
-}
+        this.mapTimeOut();
+    }
+};
 </script>
 <template>
     <section>
@@ -33,7 +56,7 @@ export default {
                     <img :src="house.photo" :alt="house.name" class="img-fluid">
                 </div>
                 <div class="row my-4">
-                    <div class="col-xl-8">
+                    <div class="col-xl-8 content-container pe-5">
                         <div>
                             <h5>{{ house.address.home_address }}</h5>
                         </div>
@@ -54,7 +77,7 @@ export default {
                             <h5 class="py-5">Composizione dell'alloggio</h5>
                             <div class="row">
                                 <div class="col-12 wrapper-composition-cards ">
-                                    <div class="card p-3 d-flex align-items-center">
+                                    <div class="card">
                                         <i class="fa-solid fa-house fa-xl my-3" style="color: #24bb83"></i>
                                         <div class="card-title">
                                             <p>
@@ -63,7 +86,7 @@ export default {
                                             <p class="text-center"><strong>{{ house.mq }} mq</strong></p>
                                         </div>
                                     </div>
-                                    <div class="card p-3 d-flex align-items-center ">
+                                    <div class="card ">
                                         <i class="fa-solid fa-bed fa-xl my-3" style="color: #24bb83"></i>
                                         <div class="card-title">
                                             <p>
@@ -72,7 +95,7 @@ export default {
                                             <p class="text-center"><strong>{{ house.total_rooms }}</strong></p>
                                         </div>
                                     </div>
-                                    <div class="card p-3 d-flex align-items-center ">
+                                    <div class="card ">
                                         <i class="fa-solid fa-mattress-pillow fa-rotate-90 fa-xl my-3"
                                             style="color: #24bb83"></i>
                                         <div class="card-title">
@@ -82,7 +105,7 @@ export default {
                                             <p class="text-center"><strong>{{ house.total_beds }}</strong></p>
                                         </div>
                                     </div>
-                                    <div class="card p-3 d-flex align-items-center ">
+                                    <div class="card ">
                                         <i class="fa-solid fa-toilet fa-xl my-3" style="color: #24bb83"></i>
                                         <div class="card-title">
                                             <p>
@@ -97,8 +120,8 @@ export default {
                         <div class="house-services py-5">
                             <h5 class="pb-4">Servizzi dell'alloggio</h5>
                             <div class="row">
-                                <div v-for="service in  house.services " class="col ">
-                                    <div>
+                                <div class="col-12 wrapper-house-services-card">
+                                    <div v-for="service in  house.services " class="card">
                                         <i :class="service.icon" class="fa-xl my-3" style="color: #24bb83"></i>
                                         <p>{{ service.name }}</p>
                                     </div>
@@ -106,7 +129,7 @@ export default {
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4">
+                    <div class="col-xl-4  form-reservation">
                         <div class="card">
                             <div class="card-title">
                                 <div>
@@ -147,6 +170,10 @@ export default {
                         </div>
                     </div>
                 </div>
+                <div id="map">
+
+                    <!-- MAPPA -->
+                </div>
             </div>
             <div class="reservation" v-for=" house  in  houseData " :key="house.id">
                 <div class="d-flex justify-content-between m-3">
@@ -165,23 +192,33 @@ export default {
 }
 
 .house-composition {
-    .card {
-        width: 180px;
-    }
 
     .card-title {
         margin-bottom: 0;
     }
 
-    .wrapper-composition-cards {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-    }
 }
 
-.col-xl-8 {
+.wrapper-composition-cards,
+.wrapper-house-services-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+
+.house-composition .card,
+.house-services .card {
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px
+}
+
+
+.content-container {
 
     .house-description,
     .host-section,
@@ -201,8 +238,10 @@ export default {
 
 }
 
-.col-xl-4 {
+.form-reservation {
     display: none;
+
+    margin-top: 20px;
 
     .card {
         max-width: 450px;
@@ -213,6 +252,7 @@ export default {
         }
 
     }
+
 
     .btn-custom {
         padding: 10px 100px;
@@ -230,5 +270,10 @@ export default {
     left: 0;
     right: 0;
     background-color: white;
+}
+
+#map {
+    height: 450px;
+    width: 100%;
 }
 </style>
