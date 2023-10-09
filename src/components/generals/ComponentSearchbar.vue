@@ -11,6 +11,7 @@ export default {
     props: { address: String },
     data() {
         return {
+            isWrong: false,
             houseFiltered: [],
             store,
             searchCity: this.address,
@@ -63,7 +64,6 @@ export default {
                 .then();
         },
         getCoordinates(targetIndex) {
-            this.showSelectionMessage = false;
 
             this.searchCity = this.searchResults[targetIndex].address.freeformAddress;
             this.lat = this.searchResults[targetIndex].position.lat;
@@ -84,6 +84,9 @@ export default {
                 }
             });
         },
+        getWrongAddress() {
+            this.isWrong = true
+        }
 
     },
 };
@@ -92,19 +95,19 @@ export default {
 <template>
     <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex flex-column ">
-        <div v-if="showSelectionMessage" class="alert alert-info mb-5">
+        <div v-if="isWrong" class="alert alert-info  mb-5">
             <i class="fa-solid fa-house-circle-exclamation fa-bounce fa-xl me-3" style="color: #25dd85;"></i>
             <strong>Seleziona uno dei suggerimenti</strong>
         </div>
         <div class="search-bar me-3">
-            <form @keyup.prevent="handleSearchCityInput">
+            <form @keyup.prevent="handleSearchCityInput" @submit.prevent="getWrongAddress()">
                 <input v-model.trim="searchCity" type="text" class="form-control" placeholder="Cerca la tua destinazione" />
                 <button class="btn btn-search bg-white" type="submit">
                     <i class="fa-solid fa-magnifying-glass-location"></i>
                 </button>
             </form>
             <ul class="list-group list-group-flush" v-if="!isSelected">
-                <li v-for="(result, index) in searchResults" :key="result.address.country" class="list-group-item"
+                <li v-for="( result, index ) in  searchResults " :key="result.address.country" class="list-group-item"
                     @click="getCoordinates(index)">
                     {{ result.address.freeformAddress }}
                 </li>
