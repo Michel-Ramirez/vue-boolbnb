@@ -45,9 +45,10 @@ export default {
                     return item != id;
                 });
             } else this.serviceSelected.push(id);
+            this.getCardsFiltered();
         },
         getCardsFiltered() {
-            this.isLoading = true;
+            this.isLoading = false;
             const endpoint = `http://127.0.0.1:8000/api/houses/search`;
             this.address = this.$route.query.address;
             this.lat = this.$route.query.lat;
@@ -62,7 +63,18 @@ export default {
                     `?lat=${this.lat}&long=${this.long}&distance=${distance_meters}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`
                 )
                 .then((res) => {
-                    store.resultCards = res.data;
+                    store.resultCards = [];
+                    res.data.forEach(house => {
+                        if (house.sponsors.length) {
+                            store.resultCards.push(house)
+                        }
+                    });
+                    res.data.forEach(house => {
+                        if (!house.sponsors.length) {
+                            store.resultCards.push(house)
+                        }
+                    });
+                    // store.resultCards = res.data;
 
                     router.push({
                         name: "searchpage",
@@ -181,7 +193,7 @@ export default {
                 <!-- SIDEBRA FILTRI -->
                 <div class="col-4 sidebar">
                     <h4>AFFINA LA TUA RICERCA</h4>
-                    <form>
+                    <form @submit.prevent="getCardsFiltered()">
                         <div class="row">
                             <div class="col-5">
                                 <div class="mb-3">
