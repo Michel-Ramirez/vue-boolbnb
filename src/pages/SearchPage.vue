@@ -62,7 +62,18 @@ export default {
                     `?lat=${this.lat}&long=${this.long}&distance=${distance_meters}&total_rooms=${this.room_number}&total_beds=${this.beds_number}&service=[${this.serviceSelected}]`
                 )
                 .then((res) => {
-                    store.resultCards = res.data;
+                    store.resultCards = [];
+                    res.data.forEach(house => {
+                        if (house.sponsors.length) {
+                            store.resultCards.push(house)
+                        }
+                    });
+                    res.data.forEach(house => {
+                        if (!house.sponsors.length) {
+                            store.resultCards.push(house)
+                        }
+                    });
+                    // store.resultCards = res.data;
 
                     router.push({
                         name: "searchpage",
