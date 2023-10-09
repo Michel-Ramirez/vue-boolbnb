@@ -21,6 +21,7 @@ export default {
         return {
             store,
             isLoading: false,
+            noHouse: false,
             distance_default_meter: "20000",
             room_number: "",
             beds_number: "",
@@ -48,11 +49,13 @@ export default {
             this.getCardsFiltered();
         },
         getCardsFiltered() {
+            this.noHouse = false;
             this.isLoading = false;
             const endpoint = `http://127.0.0.1:8000/api/houses/search`;
             this.address = this.$route.query.address;
             this.lat = this.$route.query.lat;
             this.long = this.$route.query.long;
+
 
             // TRASFORMO IL INPUT DEL UTENTE DA KM IN METRI
             const distance_meters = parseFloat(this.distance_km) * 1000;
@@ -74,6 +77,9 @@ export default {
                             store.resultCards.push(house)
                         }
                     });
+                    if (!res.data.length) {
+                        this.noHouse = true;
+                    }
                     // store.resultCards = res.data;
 
                     router.push({
@@ -88,11 +94,13 @@ export default {
                             service: this.serviceSelected.join(","),
                         },
                     });
+                    this.isLoading = false;
+
                 })
                 .catch((err) => {
                     console.error(err);
                 }).then(() => {
-                    this.isLoading = false;
+
                 });;
         },
     },
@@ -243,10 +251,9 @@ export default {
                     </form>
                 </div>
                 <div class="col-12 col-lg-8 search-result" :class="{ 'justify-content-center': !store.resultCards.length }">
-                    <div v-if="!store.resultCards.length"
-                        class="d-flex flex-column align-items-center justify-content-center">
+                    <div v-if="noHouse == true" class="d-flex flex-column align-items-center justify-content-center">
                         <i class="fa-solid fa-house-circle-xmark fa-shake fa-2xl mb-5" style="color: red"></i>
-                        <h5 class="text-center">
+                        <h5 class="text-centern " :class="{ 'd-block': noHouse }">
                             Siamo spiacenti non abbiamo trovato quello che cercavi
                         </h5>
                     </div>
