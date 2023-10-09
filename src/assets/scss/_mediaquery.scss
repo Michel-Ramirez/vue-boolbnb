@@ -96,4 +96,13 @@
   .open-offcanvas {
     display: none;
   }
+
+  .container.house-detail {
+    .col-xl-4 {
+      display: block;
+    }
+  }
+  .reservation {
+    display: none;
+  }
 }

@@ -42,6 +42,10 @@ export default {
 
 }
 
+a {
+    text-decoration: none;
+}
+
 @media screen and (min-width: 996px) {
     .card {
         width: 25rem;
