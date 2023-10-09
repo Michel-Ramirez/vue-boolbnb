@@ -1,11 +1,37 @@
 <script>
 import axios from 'axios';
+
+const endpoint = 'http://127.0.0.1:8000/api/messages/';
+const emtyForm = {
+    name: "",
+    email: "",
+    message: "",
+};
 export default {
     data() {
         return {
             houseData: [],
             isLoading: false,
+            form: emtyForm,
+            errors: {},
+            successMessage: null,
+            isLoading: false,
         };
+    },
+    computed: {
+        hasErrors() {
+            //dato un oggetto dammi un array di chiavi, keys
+            //se c'è una chiave restituisce true o false se non c'è.
+            return Object.keys(this.errors).length;
+        },
+        showAlert() {
+            // trasforma questa funzione in un booleano effettivo
+            return Boolean(this.hasErrors || this.successMessage);
+        },
+        alertType() {
+            //Ci sono errori? allora è danger altrimenti è success
+            return this.hasErrors ? 'danger' : 'success';
+        },
     },
     methods: {
         fetchData() {
@@ -38,6 +64,34 @@ export default {
             map.on('load', () => {
                 new tt.Marker().setLngLat(center).addTo(map)
             })
+        },
+        sendForm() {
+            this.errors = {};
+            this.successMessage = null;
+            this.isLoading = true;
+            const houseId = this.$route.params.id;
+            axios.post(endpoint, houseId, this.form)
+                // Inviato il form lo svuoto riportandolo allo stato iniziale
+                .then(res => {
+                    this.form = emtyForm;
+                    this.successMessage = 'Messaggio inviato'
+                })
+                .catch(err => {
+                    if (err.response.status === 400) {
+                        //prendo gli errori provenienti dal backend
+                        const errors = err.response.data.errors
+                        // preparo un oggetto da riempire
+                        const errorMessages = {}
+
+                        for (let field in errors) errorMessages[field] = errors[field][0];
+                        this.errors = errorMessages;
+                    } else {
+                        console.error(err);
+                        this.errors = { network: 'Si è verificato un errore' }
+                    }
+
+                })
+                .then(() => { this.isLoading = false; });
         }
     },
     mounted() {
@@ -135,35 +189,49 @@ export default {
                                 <div>
                                     <div class="price mb-3"><strong>{{ house.night_price }} €</strong>/notte</div>
                                     <h5 class="text-center my-3 ">Invia un messaggio al host per maggiori informazioni</h5>
-                                    <form class="d-flex flex-column align-items-center ">
+
+                                    <AppAlert :type="alertType" :isOpen="showAlert">
+                                        <div v-if="successMessage">{{ successMessage }}</div>
+                                        <ul v-if="hasErrors">
+                                            <li v-for="(error, field) in errors" :key="field">{{ error }}</li>
+                                        </ul>
+                                    </AppAlert>
+
+                                    <form @submit.prevent="sendForm" novalidate
+                                        class="d-flex flex-column align-items-center ">
                                         <div class="container mb-3">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label for="name_reservation" class="form-label">Nome</label>
-                                                    <input type="text" class="form-control" id="name_reservation">
+                                                    <input v-model.trim="form.name" type="text" class="form-control"
+                                                        id="name_reservation">
                                                 </div>
-                                                <div class="col-6">
+                                                <!-- <div class="col-6">
                                                     <label for="surname_reservation" class="form-label">Cognome</label>
-                                                    <input type="text" class="form-control" id="surname_reservation">
-                                                </div>
+                                                    <input v-model="inputSurname" type="text" class="form-control"
+                                                        id="surname_reservation">
+                                                </div> -->
                                             </div>
                                             <div class="row my-3">
                                                 <div class="col-12">
                                                     <label for="email_reservation" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email_reservation">
+                                                    <input v-model.trim="form.email" type="email" class="form-control"
+                                                        id="email_reservation">
+                                                    <small>Inserisci la tua email, ti contatteremo a questo
+                                                        indirizzo</small>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="mb-3">
                                                         <label for="detail_reservation" class="form-label">Messaggio</label>
-                                                        <textarea class="form-control" id="detail_reservation"
-                                                            rows="3"></textarea>
+                                                        <textarea v-model.trim="form.message" class="form-control"
+                                                            id="detail_reservation" rows="3"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-custom">Contatta</button>
+                                        <button type="submit" class="btn btn-custom">Contatta</button>
                                     </form>
                                 </div>
                             </div>
