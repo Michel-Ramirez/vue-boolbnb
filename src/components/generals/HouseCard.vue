@@ -7,23 +7,31 @@ export default {
 </script>
 
 <template>
-    <RouterLink :to="{ name: 'house-detail', params: { id: house.id } }">
-        <div class="card">
-            <img :src="house.photo" class="card-img-top" alt="jumbo">
-            <div class="card-body">
-                <h6>{{ house.name }}</h6>
-                <div class="evidence-services m-0 mb-3">
-                    <span>stanze {{ house.total_rooms }}</span> |
-                    <span>letti {{ house.total_beds }}</span> |
-                    <span>bagni {{ house.total_bath }}</span> |
-                    <span>mq {{ house.mq }}</span>
+    <div>
+        <RouterLink :to="{ name: 'house-detail', params: { id: house.id } }">
+            <div class="card">
+                <img :src="house.photo" class="card-img-top" alt="jumbo">
+                <div class="card-body">
+                    <h6>{{ house.name }}</h6>
+                    <div class="evidence-services m-0 mb-3">
+                        <span>stanze {{ house.total_rooms }}</span> |
+                        <span>letti {{ house.total_beds }}</span> |
+                        <span>bagni {{ house.total_bath }}</span> |
+                        <span>mq {{ house.mq }}</span>
+                    </div>
+                    <div v-if="house.home_address">{{ house.home_address }}</div>
+                    <div v-else class="address m-0">{{ house.address.home_address }}</div>
+                    <span v-for="service in house.services" :key="service.id">
+                        <i :class="service.icon"></i>&nbsp;
+                    </span>
+                    <div class="d-flex justify-content-between"><strong>{{ house.night_price }} /Notte</strong><span
+                            v-if="house.sponsors.length">
+                            <i class="fa-solid fa-star fa-flip" style="color: #22dd85;"></i>
+                        </span></div>
                 </div>
-                <div v-if="house.home_address">{{ house.home_address }}</div>
-                <div v-else class="address m-0">{{ house.address.home_address }}</div>
-                <div><strong>{{ house.night_price }} /Notte</strong></div>
             </div>
-        </div>
-    </RouterLink>
+        </RouterLink>
+    </div>
 </template>
 
 <style lang="scss" scoped>
