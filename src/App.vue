@@ -12,3 +12,8 @@ export default {
   </main>
   <AppFooter />
 </template>
+<style>
+body {
+  font-family: sans-serif;
+}
+</style>
