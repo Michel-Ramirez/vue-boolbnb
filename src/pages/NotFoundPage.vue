@@ -7,7 +7,7 @@ export default {
 <template>
     <div class="error-404">
         <div class="error-content">
-            <bold>Errore 4<i class="fa-solid fa-house-circle-exclamation fa-shake fa-2x"></i>4</bold>
+            <bold>Errore 4<i class="fa-solid fa-house-circle-exclamation fa-shake fa-2x" style="color: red"></i>4</bold>
             <p>Pagina non trovata</p>
         </div>
     </div>

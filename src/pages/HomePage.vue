@@ -201,11 +201,6 @@ h2 {
         object-fit: cover;
         // filter: blur(2px);
     }
-
-    .animate__animated.animate__fadeIn {
-        --animate-duration: 5s;
-        --animation-delay: 5s;
-    }
 }
 
 .home-title {
