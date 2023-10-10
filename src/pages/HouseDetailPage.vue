@@ -253,7 +253,62 @@ export default {
             <div class="reservation" v-for=" house  in  houseData " :key="house.id">
                 <div class="d-flex justify-content-between m-3">
                     <div class="price"><strong>{{ house.night_price }} €</strong>/notte</div>
-                    <button type="button" class="btn btn-custom">Contatta</button>
+                    <button class="btn btn-custom" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Contatta</button>
+                </div>
+            </div>
+
+
+
+            <!-- OFFCANVAS -->
+            <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom"
+                aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-header">
+                    <h5 class="text-center my-3 ">Invia un messaggio al host per maggiori informazioni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body small">
+                    <AppAlert :type="alertType" :isOpen="showAlert">
+                        <div v-if="successMessage"> <i class="fa-solid fa-check fa-xl me-3" style="color: #24dd83;"></i> {{
+                            successMessage }}</div>
+                        <ul v-if="hasErrors">
+                            <li v-for="(error, field) in errors" :key="field">{{ error }}</li>
+                        </ul>
+                    </AppAlert>
+
+                    <form @submit.prevent="sendForm" novalidate class="d-flex flex-column align-items-center ">
+                        <div class="container mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="name_reservation" class="form-label">Nome</label>
+                                    <input v-model.trim="inputName" type="text" class="form-control" id="name_reservation">
+                                </div>
+                                <div class="col-6">
+                                    <label for="surname_reservation" class="form-label">Cognome</label>
+                                    <input v-model="inputSurname" type="text" class="form-control" id="surname_reservation">
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-12">
+                                    <label for="email_reservation" class="form-label">Email</label>
+                                    <input v-model.trim="form.email" type="email" class="form-control"
+                                        id="email_reservation">
+                                    <small>Inserisci la tua email, ti contatteremo a questo
+                                        indirizzo</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="detail_reservation" class="form-label">Messaggio</label>
+                                        <textarea v-model.trim="form.message" class="form-control" id="detail_reservation"
+                                            rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Contatta</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -350,5 +405,9 @@ export default {
 #map {
     height: 450px;
     width: 100%;
+}
+
+.offcanvas {
+    height: 100%;
 }
 </style>
