@@ -17,7 +17,8 @@ export default {
             errors: {},
             successMessage: null,
             inputName: "",
-            inputSurname: ""
+            inputSurname: "",
+            ipAddress: null,
         };
     },
     computed: {
@@ -36,6 +37,13 @@ export default {
         },
     },
     methods: {
+        fetchIpAddress() {
+            axios.get("https://api.ipify.org?format=json").then(res => {
+                this.ipAddress = res.data.ip;
+                const params = { ip_viewer: this.ipAddress, house_id: this.$route.params.id }
+                axios.post("http://127.0.0.1:8000/api/houses/views", params).then()
+            })
+        },
         fetchData() {
             this.isLoading = true;
             const endpoint = 'http://127.0.0.1:8000/api/houses/';
@@ -99,8 +107,10 @@ export default {
         }
     },
     mounted() {
+        this.fetchIpAddress()
         this.fetchData();
         this.mapTimeOut();
+
     }
 };
 </script>
