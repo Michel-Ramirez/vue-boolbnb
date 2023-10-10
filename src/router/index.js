@@ -13,8 +13,6 @@ const router = createRouter({
       component: SearchPage,
       beforeRouteUpdate(to, from, next) {
         // Questo hook verrà chiamato quando l'URL cambia
-        console.log("to:", to.fullPath);
-        console.log("from", from.fullPath);
         next();
       },
     },

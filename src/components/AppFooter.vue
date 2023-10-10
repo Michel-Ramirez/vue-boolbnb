@@ -35,8 +35,10 @@ export default {
                     </div>
                     <div>
                         <h6>Alex Tanase</h6>
-                        <a href="#"><i class="fa-brands fa-linkedin fa-lg me-2" style="color: #24dd86;"></i></a>
-                        <a href="#"><i class="fa-brands fa-github fa-lg" style="color: #24dd83;"></i></a>
+                        <a href="https://www.linkedin.com/in/alexandru-tanase-1b03ab199/"><i
+                                class="fa-brands fa-linkedin fa-lg me-2" style="color: #24dd86;"></i></a>
+                        <a href="https://github.com/TALEX1995"><i class="fa-brands fa-github fa-lg"
+                                style="color: #24dd83;"></i></a>
                     </div>
                     <div>
                         <h6>Daniel Megale</h6>
