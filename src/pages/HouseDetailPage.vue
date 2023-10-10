@@ -181,7 +181,9 @@ export default {
                                 <div class="col-12 wrapper-house-services-card">
                                     <div v-for="service in  house.services " class="card">
                                         <i :class="service.icon" class="fa-xl my-3" style="color: #24bb83"></i>
-                                        <p>{{ service.name }}</p>
+                                        <p>
+                                            <strong>{{ service.name }}</strong>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
