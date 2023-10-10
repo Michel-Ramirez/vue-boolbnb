@@ -2,6 +2,14 @@
 export default {
     props: {
         house: Object,
+    },
+    computed: {
+        isSponsored() {
+            const currentDate = new Date();
+            const sponsorEndDate = new Date(this.house.sponsors[this.house.sponsors.length - 1].pivot.sponsor_end);
+
+            return sponsorEndDate > currentDate;
+        }
     }
 }
 </script>
@@ -24,10 +32,11 @@ export default {
                     <span v-for="service in house.services" :key="service.id">
                         <i :class="service.icon"></i>&nbsp;
                     </span>
-                    <div class="d-flex justify-content-between"><strong>{{ house.night_price }} /Notte</strong><span
-                            v-if="house.sponsors.length">
+                    <div class="d-flex justify-content-between"><strong>{{ house.night_price }} /Notte</strong>
+                        <span v-if="isSponsored">
                             <i class="fa-solid fa-star fa-flip" style="color: #22dd85;"></i>
-                        </span></div>
+                        </span>
+                    </div>
                 </div>
             </div>
         </RouterLink>
