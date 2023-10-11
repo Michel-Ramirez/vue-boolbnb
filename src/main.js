@@ -8,7 +8,7 @@ import App from "./App.vue";
 import AppHeader from "./components/AppHeader.vue";
 import HouseCard from "./components/generals/HouseCard.vue";
 import AppLoader from "./components/AppLoader.vue";
-import AppNotFound from "./components/AppNotFound.vue";
+import NotFoundPage from "./pages/NotFoundPage.vue";
 import AppAlert from "./components/AppAlert.vue";
 import { router } from "./router";
 
@@ -16,7 +16,7 @@ const app = createApp(App);
 app.component("AppHeader", AppHeader);
 app.component("HouseCard", HouseCard);
 app.component("AppLoader", AppLoader);
-app.component("AppNotFound", AppNotFound);
+app.component("NotFoundPage", NotFoundPage);
 app.component("AppAlert", AppAlert);
 // app.component("AppAlert", AppAlert);
 //utilizzo il router

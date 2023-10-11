@@ -118,20 +118,36 @@ export default {
             <div class="container-fliud jumbotron">
                 <hgroup class="home-title my-5">
                     <h3>Esplora, riposa, divertiti</h3>
-                    <h1>La tua casa lontano da casa</h1>
+                    <h1><strong>La tua casa lontano da casa</strong></h1>
                 </hgroup>
                 <ComponentSearchbar />
             </div>
         </section>
         <div>
             <section class="featured py-5">
-                <h3 class="my-5">In evidenza</h3>
+                <h2 class="my-5"><strong>Case in evidenza</strong></h2>
                 <div class="container">
                     <div class="row">
                         <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
                             <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
                         </div>
                         <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
+                    </div>
+                </div>
+            </section>
+            <section class="travel-jumbo">
+                <div class="container">
+                    <img src="../../public/img/travel.png" alt="_travel" class="img-fluid img-travel-banner">
+                </div>
+            </section>
+            <section class="popular-city container my-5 pt-3">
+                <h2 class="text-center my-5"><strong>Le mete Italiane più famose</strong></h2>
+                <div class="row">
+                    <div class="col-12 wrapper-city">
+                        <div @click="fetchpPopular(index)" v-for="(city, index) in popularCityes" class="city card">
+                            <img :src="city.img" :alt="city.name" class="img-fluid">
+                            <span class="city-name">{{ city.name }}</span>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -151,23 +167,16 @@ export default {
                     </div>
                 </div>
             </section>
-            <section class="popular-city container my-5 pt-3">
-                <h2 class="text-center my-5">Le mete Italiane più famose</h2>
-                <div class="row">
-                    <div class="col-12 wrapper-city">
-                        <div @click="fetchpPopular(index)" v-for="(city, index) in popularCityes" class="city card">
-                            <img :src="city.img" :alt="city.name" class="img-fluid">
-                            <span class="city-name">{{ city.name }}</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
 </template>
 
 <style lang="scss">
 @use '../assets/scss/mediaquery' as *;
+
+h2 {
+    font-size: 2.5rem;
+}
 
 // JUMBOTRON 
 .jumbotron {
@@ -192,11 +201,6 @@ export default {
         object-fit: cover;
         // filter: blur(2px);
     }
-
-    .animate__animated.animate__fadeIn {
-        --animate-duration: 5s;
-        --animation-delay: 5s;
-    }
 }
 
 .home-title {
@@ -214,7 +218,7 @@ export default {
 
 .featured {
     border-radius: 10px;
-    background-color: #25dd8417;
+    // background-color: #25dd8417;
 }
 
 .featured,
@@ -229,6 +233,13 @@ export default {
     gap: 20px;
     justify-content: center;
 }
+
+//jumbo travel
+
+.travel-jumbo {
+    background-color: #f7f7f7;
+}
+
 
 .travel {
     background-color: #F7F7F7;
@@ -276,7 +287,7 @@ export default {
         position: absolute;
         top: 20px;
         left: 20px;
-        font-size: 3rem;
+        font-size: 2rem;
         font-weight: 600;
         color: white;
         text-shadow: 3px 2px 2px #000000;

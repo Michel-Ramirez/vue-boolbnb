@@ -7,7 +7,7 @@ export default {
 <template>
     <div class="error-404">
         <div class="error-content">
-            <bold>Errore 4<i class="fa-solid fa-house-circle-exclamation fa-shake fa-2x"></i>4</bold>
+            <bold>Errore 4<i class="fa-solid fa-house-circle-exclamation fa-shake fa-2x" style="color: red"></i>4</bold>
             <p>Pagina non trovata</p>
         </div>
     </div>
@@ -15,9 +15,12 @@ export default {
 
 
 <style scoped lang="scss">
-.error-404 {
+body {
     position: relative;
-    background-image: url('../img/bgc-404-4.jpg');
+}
+
+.error-404 {
+    position: absolute;
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -26,21 +29,17 @@ export default {
     align-items: center;
     color: white;
     text-shadow: 0 3px black;
-    font-size: 3em;
+    font-size: 2em;
+    background: rgba(77, 77, 77, 0.992);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
 
     .error-content {
-        z-index: 1;
         text-align: center;
     }
 
-    &::before {
-        content: '';
-        background: rgba(0, 0, 0, 0.7);
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
 }
 </style>
