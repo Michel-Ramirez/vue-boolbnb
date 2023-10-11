@@ -185,9 +185,9 @@ export default {
                             </div>
                         </div>
                         <div class="d-flex justify-content-center my-5">
-                            <button @click="reset()" type="button" class="btn-custom me-3">
+                            <!-- <button @click="reset()" type="button" class="btn-custom me-3">
                                 Reset
-                            </button>
+                            </button> -->
                             <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
                                 class="btn-custom">
                                 Invia
@@ -245,9 +245,9 @@ export default {
                                         </label>
                                     </div>
                                     <div class="d-flex justify-content-end my-5">
-                                        <button @click="reset()" type="button" class="btn-custom me-3">
+                                        <!-- <button @click="reset()" type="button" class="btn-custom me-3">
                                             Reset
-                                        </button>
+                                        </button> -->
                                         <button @click="getCardsFiltered()" type="button" class="btn-custom">
                                             Invia
                                         </button>

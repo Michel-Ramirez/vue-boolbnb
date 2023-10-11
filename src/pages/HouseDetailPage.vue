@@ -186,7 +186,7 @@ export default {
                             </div>
                         </div>
                         <div class="house-services py-5">
-                            <h5 class="pb-4">Servizzi dell'alloggio</h5>
+                            <h5 class="pb-4">Servizi dell'alloggio</h5>
                             <div class="row">
                                 <div class="col-12 wrapper-house-services-card">
                                     <div v-for="service in  house.services " class="card">
