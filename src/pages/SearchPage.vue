@@ -34,6 +34,13 @@ export default {
         };
     },
     methods: {
+        isSponsored(house) {
+            if (house.sponsors[house.sponsors.length - 1]) {
+                const currentDate = new Date();
+                const sponsorEndDate = new Date(house.sponsors[house.sponsors.length - 1].pivot.sponsor_end);
+                return sponsorEndDate > currentDate;
+            }
+        },
         reset() {
             this.distance_km = "20";
             this.room_number = "";
@@ -68,12 +75,12 @@ export default {
                 .then((res) => {
                     store.resultCards = [];
                     res.data.forEach(house => {
-                        if (house.sponsors.length) {
+                        if (this.isSponsored(house)) {
                             store.resultCards.push(house)
                         }
                     });
                     res.data.forEach(house => {
-                        if (!house.sponsors.length) {
+                        if (!this.isSponsored(house)) {
                             store.resultCards.push(house)
                         }
                     });
