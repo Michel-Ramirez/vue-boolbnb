@@ -125,7 +125,8 @@ export default {
         </section>
         <div>
             <section class="featured py-5">
-                <h2 class="my-5"><strong>Case in evidenza</strong></h2>
+                <h2 class="my-5 fw-bold"><strong>Trova l'ispirazione per i tuoi viaggi</strong></h2>
+                <h5 class="text-center fw-bolder">Con i nostri alloggi in evidenza</h5>
                 <div class="container">
                     <div class="row">
                         <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">

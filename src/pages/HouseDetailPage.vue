@@ -119,22 +119,23 @@ export default {
         <AppLoader v-if="isLoading" />
         <div v-else>
             <div class="house-detail container my-5" v-for="house in  houseData " :key="house.id">
-                <h1 class="my-5">{{ house.type }} | {{ house.name }}</h1>
+                <h1 class="my-5 fw-bold">{{ house.type }} | {{ house.name }}</h1>
                 <div>
-                    <img :src="house.photo" :alt="house.name" class="img-fluid">
+                    <img :src="house.photo" :alt="house.name" class="img-fluid w-100">
                 </div>
                 <div class="row my-4">
                     <div class="col-xl-8 content-container pe-5">
                         <div>
-                            <h5>{{ house.address.home_address }}</h5>
+                            <h5 class="fw-bold">{{ house.address.home_address }}</h5>
                         </div>
                         <div>
-                            <span>Stanze: {{ house.total_rooms }}</span> |
-                            <span>Letti: {{ house.total_beds }}</span> |
-                            <span>Bagni: {{ house.total_bath }}</span>
+                            <span><strong>Stanze:</strong> {{ house.total_rooms }}</span> |
+                            <span><strong>Letti:</strong> {{ house.total_beds }}</span> |
+                            <span><strong>Bagni:</strong> {{ house.total_bath }}</span>
                         </div>
                         <div class="host-section">
-                            <h6 class="py-4">Nome dell'host: {{ house.user.name }} {{ house.user.surname }}</h6>
+                            <h6 class="py-4"><strong>Nome dell'host:</strong> {{ house.user.name }} {{ house.user.surname }}
+                            </h6>
                         </div>
                         <div class="house-description">
                             <p>
@@ -204,7 +205,8 @@ export default {
                             <div class="card-title">
                                 <div>
                                     <div class="price mb-3"><strong>{{ house.night_price }} €</strong>/notte</div>
-                                    <h5 class="text-center my-3 ">Invia un messaggio al host per maggiori informazioni</h5>
+                                    <h5 class="text-center my-3 fw-bolder">Invia un messaggio al host per maggiori
+                                        informazioni</h5>
 
                                     <AppAlert :type="alertType" :isOpen="showAlert">
                                         <div v-if="successMessage"> <i class="fa-solid fa-check fa-xl me-3"
@@ -219,19 +221,22 @@ export default {
                                         <div class="container mb-3">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <label for="name_reservation" class="form-label">Nome</label>
+                                                    <label for="name_reservation" class="form-label">Nome<span
+                                                            class="text-danger">*</span></label>
                                                     <input v-model.trim="inputName" type="text" class="form-control"
                                                         id="name_reservation">
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="surname_reservation" class="form-label">Cognome</label>
+                                                    <label for="surname_reservation" class="form-label">Cognome<span
+                                                            class="text-danger">*</span></label>
                                                     <input v-model="inputSurname" type="text" class="form-control"
                                                         id="surname_reservation">
                                                 </div>
                                             </div>
                                             <div class="row my-3">
                                                 <div class="col-12">
-                                                    <label for="email_reservation" class="form-label">Email</label>
+                                                    <label for="email_reservation" class="form-label">Email<span
+                                                            class="text-danger">*</span></label>
                                                     <input v-model.trim="form.email" type="email" class="form-control"
                                                         id="email_reservation">
                                                     <small>Inserisci la tua email, ti contatteremo a questo
@@ -241,7 +246,8 @@ export default {
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="mb-3">
-                                                        <label for="detail_reservation" class="form-label">Messaggio</label>
+                                                        <label for="detail_reservation" class="form-label">Messaggio<span
+                                                                class="text-danger">*</span></label>
                                                         <textarea v-model.trim="form.message" class="form-control"
                                                             id="detail_reservation" rows="3"></textarea>
                                                     </div>
@@ -255,6 +261,7 @@ export default {
                         </div>
                     </div>
                 </div>
+                <h4 class="fw-bold my-3">Dove ci troverai</h4>
                 <div id="map">
 
                     <!-- MAPPA -->
@@ -290,17 +297,20 @@ export default {
                         <div class="container mb-3">
                             <div class="row">
                                 <div class="col-6">
-                                    <label for="name_reservation" class="form-label">Nome</label>
+                                    <label for="name_reservation" class="form-label">Nome<span
+                                            class="text-danger">*</span></label>
                                     <input v-model.trim="inputName" type="text" class="form-control" id="name_reservation">
                                 </div>
                                 <div class="col-6">
-                                    <label for="surname_reservation" class="form-label">Cognome</label>
+                                    <label for="surname_reservation" class="form-label">Cognome<span
+                                            class="text-danger">*</span></label>
                                     <input v-model="inputSurname" type="text" class="form-control" id="surname_reservation">
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="col-12">
-                                    <label for="email_reservation" class="form-label">Email</label>
+                                    <label for="email_reservation" class="form-label">Email<span
+                                            class="text-danger">*</span></label>
                                     <input v-model.trim="form.email" type="email" class="form-control"
                                         id="email_reservation">
                                     <small>Inserisci la tua email, ti contatteremo a questo
@@ -310,7 +320,8 @@ export default {
                             <div class="row">
                                 <div class="col-12">
                                     <div class="mb-3">
-                                        <label for="detail_reservation" class="form-label">Messaggio</label>
+                                        <label for="detail_reservation" class="form-label">Messaggio<span
+                                                class="text-danger">*</span></label>
                                         <textarea v-model.trim="form.message" class="form-control" id="detail_reservation"
                                             rows="3"></textarea>
                                     </div>
@@ -380,12 +391,12 @@ export default {
 
 .form-reservation {
     display: none;
-
     margin-top: 20px;
 
     .card {
         max-width: 450px;
         padding: 30px;
+        box-shadow: 0px 0px 16px 0px #000;
 
         #detail_reservation {
             min-height: 200px;
@@ -410,6 +421,7 @@ export default {
     left: 0;
     right: 0;
     background-color: white;
+    height: 70px;
 }
 
 #map {
