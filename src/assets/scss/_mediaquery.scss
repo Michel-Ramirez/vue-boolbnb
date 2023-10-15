@@ -63,7 +63,7 @@
 
 @media screen and (min-width: 996px) {
   section .jumbotron {
-    height: 600px;
+    height: 900px;
     .search-bar {
       width: 800px;
 
@@ -81,6 +81,8 @@
     }
 
     .home-title {
+      margin: 150px 0;
+
       h1 {
         font-size: 6rem;
       }

@@ -126,7 +126,7 @@ export default {
     <div v-else>
         <section>
             <div class="container-flui jumbotron">
-                <hgroup class="home-title my-5">
+                <hgroup class="home-title">
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1><strong>La tua casa lontano da casa</strong></h1>
                 </hgroup>
@@ -209,6 +209,10 @@ h2 {
     flex-direction: column;
     justify-content: top;
     align-items: center;
+
+    .home-title {
+        margin: 100px 0;
+    }
 
     figure {
         height: 100%;
