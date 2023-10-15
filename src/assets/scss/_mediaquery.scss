@@ -7,6 +7,11 @@
   .search-bar .form-control {
     height: 100%;
   }
+
+  a #go-up {
+    bottom: 50px;
+    right: 50px;
+  }
 }
 
 @media screen and (min-width: 769px) {
@@ -58,6 +63,11 @@
     .city.card:nth-child(5) {
       width: calc(100% / 2 - 40px);
     }
+  }
+
+  #go-up {
+    bottom: 50px;
+    right: 50px;
   }
 }
 

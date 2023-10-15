@@ -18,6 +18,7 @@ export default {
             isLoading: false,
             counter: 9,
             searchResults: [],
+            showGoUp: false,
 
             popularCityes: [
                 {
@@ -112,11 +113,19 @@ export default {
         },
         showMoreHouses() {
             this.counter += 9;
+        },
+        scrollDetect() {
+            if (window.screenY === 0) {
+                this.showGoUp = false;
+            }
+            if (window.scrollY >= 1000) {
+                this.showGoUp = true;
+            }
         }
     },
     mounted() {
         this.fetchEvidenceHouses();
-        this.autoPlay = setInterval(this.gotoNext, 5000);
+        window.addEventListener('scroll', this.scrollDetect);
     }
 }
 </script>
@@ -124,6 +133,7 @@ export default {
     <!-- <AppNotFound /> -->
     <AppLoader v-if="isLoading" />
     <div v-else>
+        <!-- JUMBOTRON -->
         <section>
             <div class="container-flui jumbotron">
                 <hgroup class="home-title">
@@ -133,7 +143,7 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-
+        <!-- SPOSORS SECTION -->
         <section class="featured container-xxl py-5">
             <h2 class="my-5 fw-bold"><strong>Trova l'ispirazione per i tuoi viaggi</strong></h2>
             <h5 class="text-center fw-bolder">Con i nostri alloggi in evidenza</h5>
@@ -146,6 +156,7 @@ export default {
             </div>
 
         </section>
+        <!-- TRAVEL IMG -->
         <section class="travel-jumbo">
             <img src="../../public/img/travel.png" alt="_travel" class="img-fluid img-travel-banner">
         </section>
@@ -160,6 +171,7 @@ export default {
                 </div>
             </div>
         </section>
+        <!-- ALL HOUSE SECTION -->
         <section class="all-houses container-xxl mt-5">
             <h2 class="text-center my-5 pt-5"><strong>Tutte le nostra case</strong></h2>
             <div class="row">
@@ -171,6 +183,7 @@ export default {
                 </div>
             </div>
         </section>
+        <!-- TRAVEL CONTENT TOP FOOTER -->
         <section class="travel py-5">
             <div class="container">
                 <div class="row">
@@ -188,10 +201,16 @@ export default {
             </div>
         </section>
     </div>
+
+    <!-- GO TO UP -->
+    <a href="#app" id="go-up" v-if="showGoUp">
+        <i class="fa-solid fa-angles-up"></i>
+    </a>
 </template>
 
 <style lang="scss">
 @use '../assets/scss/mediaquery' as *;
+@use '../assets/scss/vars' as *;
 
 h2 {
     font-size: 2.5rem;
@@ -344,5 +363,29 @@ h2 {
             color: white;
         }
     }
+}
+
+#go-up {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    padding: 15px 20px;
+    border-radius: 50%;
+    background-color: $color-main;
+
+    .fa-angles-up {
+        font-size: 1.5rem;
+        color: $custom-black;
+    }
+
+    &:hover {
+        background-color: $custom-black;
+
+        .fa-angles-up {
+            color: white;
+        }
+
+    }
+
 }
 </style>

@@ -4,7 +4,7 @@ import { store } from "../../data/store";
 import { router } from '../../router/index.js';
 import { useRouter } from 'vue-router';
 const endpoint = `http://127.0.0.1:8000/api/houses/search`;
-const tomtomApiKey = "key=soH7vSRFYTpCT37GOm8wEimPoDyc3GMe";
+const tomtomApiKey = "key=Y9WgIJTG4Dl6xJPPjlGdCUdsZrhG2Fml";
 
 export default {
     name: "ComponentSearchbar",
@@ -123,10 +123,12 @@ export default {
     width: 300px;
     box-shadow: 0px 0px 49px 10px rgba(37, 221, 133, 0.7);
     position: relative;
+    border-radius: 20px;
 
     .form-control {
         height: 40px;
         border: 0;
+        border-radius: 20px;
         font-size: 1rem;
     }
 
@@ -138,6 +140,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 20px;
 
         .fa-magnifying-glass-location {
             color: #25dd85;
