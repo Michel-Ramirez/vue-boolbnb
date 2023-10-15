@@ -46,6 +46,19 @@
     display: flex;
     gap: 10px;
   }
+
+  .wrapper-city {
+    .city.card:nth-child(2),
+    .city.card:nth-child(3),
+    .city.card:nth-child(6) {
+      width: calc(100% / 3 - 40px);
+    }
+    .city.card:nth-child(1),
+    .city.card:nth-child(4),
+    .city.card:nth-child(5) {
+      width: calc(100% / 2 - 40px);
+    }
+  }
 }
 
 @media screen and (min-width: 996px) {
@@ -104,5 +117,18 @@
   }
   .reservation {
     display: none;
+  }
+
+  .wrapper-city {
+    .city.card:nth-child(2),
+    .city.card:nth-child(3),
+    .city.card:nth-child(6) {
+      width: calc(100% / 3 - 40px);
+    }
+    .city.card:nth-child(1),
+    .city.card:nth-child(4),
+    .city.card:nth-child(5) {
+      width: calc(100% / 2 - 40px);
+    }
   }
 }
