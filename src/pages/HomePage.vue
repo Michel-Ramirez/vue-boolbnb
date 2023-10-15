@@ -16,7 +16,7 @@ export default {
             evidenceHouses: [],
             allHouses: [],
             isLoading: false,
-            counter: 10,
+            counter: 9,
             searchResults: [],
 
             popularCityes: [
@@ -111,7 +111,7 @@ export default {
             });
         },
         showMoreHouses() {
-            this.counter += 10;
+            this.counter += 9;
         }
     },
     mounted() {
@@ -125,7 +125,7 @@ export default {
     <AppLoader v-if="isLoading" />
     <div v-else>
         <section>
-            <div class="container-fliud jumbotron">
+            <div class="container-flui jumbotron">
                 <hgroup class="home-title my-5">
                     <h3>Esplora, riposa, divertiti</h3>
                     <h1><strong>La tua casa lontano da casa</strong></h1>
@@ -133,63 +133,60 @@ export default {
                 <ComponentSearchbar />
             </div>
         </section>
-        <div>
-            <section class="featured py-5">
-                <h2 class="my-5 fw-bold"><strong>Trova l'ispirazione per i tuoi viaggi</strong></h2>
-                <h5 class="text-center fw-bolder">Con i nostri alloggi in evidenza</h5>
 
-                <div class="row">
-                    <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
-                        <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
-                    </div>
-                    <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
-                </div>
+        <section class="featured container-xxl py-5">
+            <h2 class="my-5 fw-bold"><strong>Trova l'ispirazione per i tuoi viaggi</strong></h2>
+            <h5 class="text-center fw-bolder">Con i nostri alloggi in evidenza</h5>
 
-            </section>
-            <section class="travel-jumbo">
-                <!-- <div class="container"> -->
-                <img src="../../public/img/travel.png" alt="_travel" class="img-fluid img-travel-banner">
-                <!-- </div> -->
-            </section>
-            <section class="popular-city container my-5 pt-3">
-                <h2 class="text-center my-5"><strong>Le mete Italiane più famose</strong></h2>
+            <div class="row">
+                <div v-if="evidenceHouses.length" class="col wrapper-featured-cards">
+                    <HouseCard v-for="house in evidenceHouses" :key="house.id" class="my-3" :house="house" />
+                </div>
+                <h4 v-else class="text-center">Attualmente non ci sono appartamenti in evidenza</h4>
+            </div>
+
+        </section>
+        <section class="travel-jumbo">
+            <img src="../../public/img/travel.png" alt="_travel" class="img-fluid img-travel-banner">
+        </section>
+        <section class="popular-city container-fluid my-5 pt-3">
+            <h2 class="text-center my-5"><strong>Le mete Italiane più famose</strong></h2>
+            <div class="row">
+                <div class="col wrapper-city">
+                    <div @click="fetchpPopular(index)" v-for="(city, index) in popularCityes" class="city card">
+                        <img :src="city.img" :alt="city.name" class="img-fluid">
+                        <span class="city-name">{{ city.name }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="all-houses container-xxl mt-5">
+            <h2 class="text-center my-5 pt-5"><strong>Tutte le nostra case</strong></h2>
+            <div class="row">
+                <div class="col">
+                    <HouseCard v-for="(house, index) in visibleHouses" :key="house.id" class="my-3" :house="house" />
+                </div>
+                <div class="d-flex justify-content-center my-5">
+                    <button @click="showMoreHouses" class="btn-custom">Mostra altro</button>
+                </div>
+            </div>
+        </section>
+        <section class="travel py-5">
+            <div class="container">
                 <div class="row">
-                    <div class="col-12 wrapper-city">
-                        <div @click="fetchpPopular(index)" v-for="(city, index) in popularCityes" class="city card">
-                            <img :src="city.img" :alt="city.name" class="img-fluid">
-                            <span class="city-name">{{ city.name }}</span>
-                        </div>
+                    <div class="col-8">
+                        <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
+                        <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo
+                            noi.
+                            Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
+                        </p>
+                    </div>
+                    <div class="col-4">
+                        <img src="../img/travel.jpg" alt="" class="img-fluid">
                     </div>
                 </div>
-            </section>
-            <section class="all-houses mt-5">
-                <h2 class="text-center my-5 pt-5"><strong>Tutte le nostra case</strong></h2>
-                <div class="row">
-                    <div class="col">
-                        <HouseCard v-for="(house, index) in visibleHouses" :key="house.id" class="my-3" :house="house" />
-                    </div>
-                    <div class="d-flex justify-content-center my-5">
-                        <button @click="showMoreHouses" class="btn-custom">Mostra altro</button>
-                    </div>
-                </div>
-            </section>
-            <section class="travel py-5">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-8">
-                            <h4 class="my-5">Scegli una meta, inizia la tua esperienza</h4>
-                            <p>Incomincia il tuo viaggio ora, contatta l'host del appartamento scelto al resto penseremo
-                                noi.
-                                Tu dovrai solo preoccuparti di divertirti e goderti il viaggio.
-                            </p>
-                        </div>
-                        <div class="col-4">
-                            <img src="../img/travel.jpg" alt="" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -262,9 +259,11 @@ h2 {
     background-color: #f7f7f7;
     display: flex;
     justify-content: center;
+    max-height: 900px;
 
     img {
-        height: 800px;
+        max-height: 100%;
+        object-fit: contain;
     }
 }
 
@@ -283,13 +282,13 @@ h2 {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px
+    gap: 20px;
 }
 
 .city {
     cursor: pointer;
-    width: 400px;
-    height: 400px;
+    min-width: calc(100% / 3 - 40px);
+    height: 500px;
 
     &:hover {
 
@@ -301,7 +300,7 @@ h2 {
             }
 
             100% {
-                transform: scale(1.1, 1.1);
+                transform: scale(1.02, 1.05);
             }
         }
     }
@@ -319,10 +318,7 @@ h2 {
         font-weight: 600;
         color: white;
         text-shadow: 3px 2px 2px #000000;
-
-
     }
-
 }
 
 .all-houses {
