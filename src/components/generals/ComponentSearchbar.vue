@@ -119,16 +119,21 @@ export default {
 </template>
 
 <style lang="scss">
+.search-bar,
+.form-control,
+.btn-search {
+    border-radius: 20px;
+
+}
+
 .search-bar {
     width: 300px;
     box-shadow: 0px 0px 49px 10px rgba(37, 221, 133, 0.7);
     position: relative;
-    border-radius: 20px;
 
     .form-control {
         height: 40px;
         border: 0;
-        border-radius: 20px;
         font-size: 1rem;
     }
 
@@ -140,7 +145,6 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 20px;
 
         .fa-magnifying-glass-location {
             color: #25dd85;
