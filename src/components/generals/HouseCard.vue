@@ -5,10 +5,12 @@ export default {
     },
     computed: {
         isSponsored() {
-            if (this.house.sponsors[this.house.sponsors.length - 1]) {
-                const currentDate = new Date();
-                const sponsorEndDate = new Date(this.house.sponsors[this.house.sponsors.length - 1].pivot.sponsor_end);
-                return sponsorEndDate > currentDate;
+            if (this.house.sponsors) {
+                if (this.house.sponsors[this.house.sponsors.length - 1]) {
+                    const currentDate = new Date();
+                    const sponsorEndDate = new Date(this.house.sponsors[this.house.sponsors.length - 1].pivot.sponsor_end);
+                    return sponsorEndDate > currentDate;
+                }
             }
         }
     }
