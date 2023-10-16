@@ -123,7 +123,7 @@ export default {
     <AppLoader v-if="isLoading" />
     <section v-else class="container-sm container-xxl d-flex flex-column align-items-center mb-5">
         <div class="jumbo-search">
-            <h1 class="mb-5 text-center">
+            <h1 class="mb-5 text-center fw-bold">
                 Cerca la tua destinazione, incomincia il tuo viaggio
             </h1>
             <div class="d-flex align-items-center">
@@ -201,13 +201,13 @@ export default {
         <!-- RESULT IN SEARCH PAGE -->
 
         <div class="wrapper-result">
-            <h2 v-if="store.resultCards.length" class="my-5 text-center">
+            <h3 v-if="store.resultCards.length" class="my-5 text-center">
                 Ecco cosa abbiamo trovato in {{ this.address }}
-            </h2>
+            </h3>
             <div class="row">
                 <!-- SIDEBRA FILTRI -->
                 <div class="col-4 sidebar">
-                    <h4>AFFINA LA TUA RICERCA</h4>
+                    <h4 class="fw-bold">Affina la tau ricerca</h4>
                     <form @submit.prevent="getCardsFiltered()">
                         <div class="row">
                             <div class="col-5">
@@ -226,14 +226,15 @@ export default {
                         <div class="row">
                             <div class="col-7">
                                 <div class="mb-3">
-                                    <label for="distance_number_id" class="form-label">Distanza in Km dal indirizzo
+                                    <label for="distance_number_id" class="form-label">Distanza dal indirizzo
                                         ricercato</label>
-                                    <input v-model="distance_km" type="number" class="form-control"
-                                        id="distance_number_id" />
+                                    <input type="range" v-model="distance_km" class="form-range my-3" min="5" max="100"
+                                        step="5" id="distance_number_id">
+                                    <span class="distance-field">{{ this.distance_km }} Km</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mt-5">
                             <div class="row me-5">
                                 <div class="col">
                                     <h6>Servizi della stanza</h6>
@@ -289,6 +290,16 @@ export default {
 
 .sidebar {
     display: none;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    padding: 30px;
+
+    .distance-field {
+        margin: 20px 0;
+        border: 1px solid lightgray;
+        padding: 10px;
+        border-radius: 10px;
+    }
 }
 
 .search-result {
