@@ -88,7 +88,7 @@ export default {
                         this.noHouse = true;
                     }
                     // store.resultCards = res.data;
-
+                    this.fetchMapMultiMarker();
                     router.push({
                         name: "searchpage",
                         query: {
@@ -109,6 +109,56 @@ export default {
                 }).then(() => {
 
                 });;
+
+            // console.log(store.resultCards)
+        },
+
+        //costruisco mappa da mostrare nella pagina della ricerca, contenente i marker degli appartamenti.
+        fetchMapMultiMarker() {
+
+            //inizializzo variabile per registrare i dati
+            const houseDatas = [];
+
+            //Prendere le coordinate e i dati desiderati in arrivo nella resultCards e costruire un oggetto con delle proprietà
+            store.resultCards.forEach((house) => {
+
+                const houseData = {
+                    long: house.longitude,
+                    lat: house.latitude,
+                    name: house.name,
+                    price: house.night_price,
+                    id: house.id
+                };
+
+                //uso metodo push per salvare i dati nel array
+                houseDatas.push(houseData);
+
+            });
+
+            //uso le coordinate della ricerca per posizionare il centro della mappa
+            const center = [this.long, this.lat];
+
+            //costruisco al mappa
+            const map = tt.map({
+                key: 'soH7vSRFYTpCT37GOm8wEimPoDyc3GMe',
+                container: "map",
+                center: center,
+                zoom: 10
+            })
+
+            //itero all'inerno dell'array di oggetti per posizionare i marker all'interno della mappa.
+            houseDatas.forEach((data) => {
+
+                //registro le coordinate del marker
+                const marker = [data.long, data.lat]
+                //genero il marker
+                const newMarker = new tt.Marker().setLngLat(marker).addTo(map)
+
+                const popup = new tt.Popup({ anchor: 'top' }).setText(data.price + ' €' + ' - ' + data.name);
+                newMarker.setPopup(popup).togglePopup()
+
+            })
+
         },
     },
     created() {
@@ -258,6 +308,8 @@ export default {
                         </div>
                     </form>
                 </div>
+
+                <!-- RESULT SEARCHBAR -->
                 <div class="col-12 col-lg-8 search-result" :class="{ 'justify-content-center': !store.resultCards.length }">
                     <div v-if="noHouse == true" class="d-flex flex-column align-items-center justify-content-center">
                         <i class="fa-solid fa-house-circle-xmark fa-shake fa-2xl mb-5" style="color: red"></i>
@@ -266,12 +318,21 @@ export default {
                         </h5>
                     </div>
                     <HouseCard v-for="house in store.resultCards" :key="house.id" :house="house" />
+
+                    <div id="map">
+
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 </template>
 <style lang="scss" scoped>
+#map {
+    height: 500px;
+    width: 100%;
+}
+
 .container-sm {
     .jumbo-search {
         height: 350px;
