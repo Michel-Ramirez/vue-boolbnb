@@ -128,7 +128,8 @@ export default {
 
 .search-bar {
     width: 300px;
-    box-shadow: 0px 0px 49px 10px rgba(37, 221, 133, 0.7);
+    box-shadow: 0px 10px 30px -13px #25dd85;
+    border: 1px solid #25dd85;
     position: relative;
 
     .form-control {
@@ -197,5 +198,9 @@ export default {
     &:hover {
         background-image: linear-gradient(to right, #4c4c4c, #191919);
     }
+}
+
+ul {
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.2);
 }
 </style>

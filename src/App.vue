@@ -12,7 +12,9 @@ export default {
   </main>
   <AppFooter />
 </template>
-<style>
+<style lang="scss">
+@use './assets/scss/reset' as *;
+
 body {
   font-family: sans-serif;
 }

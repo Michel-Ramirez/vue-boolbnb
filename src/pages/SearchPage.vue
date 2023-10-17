@@ -167,93 +167,27 @@ export default {
     <AppLoader v-if="isLoading" />
     <section v-else>
         <div class="container-sm container-xxl">
-            <div class="jumbo-search">
-                <h1 class="mb-5 text-center fw-bold">
-                    Cerca la tua destinazione, incomincia il tuo viaggio
-                </h1>
-                <div class="d-flex align-items-center">
-                    <Searchbar :address="address" />
-                    <!-- BUTTON ACTIVATE OFFCANVAS -->
-                    <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-                        <i class="fa-solid fa-sliders"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- OFFCANVAS -->
-
-            <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
-                aria-labelledby="staticBackdropLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
-                        Filtri
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-5">
-                                <div class="mb-3">
-                                    <label for="room_number_id" class="form-label">Stanze:</label>
-                                    <input v-model="room_number" type="number" class="form-control" id="room_number_id" />
-                                </div>
-                            </div>
-                            <div class="col-5">
-                                <div class="mb-3">
-                                    <label for="beds_number_id" class="form-label">Posti letto:</label>
-                                    <input v-model="beds_number" type="number" class="form-control" id="beds_number_id" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-7">
-                                <div class="mb-3">
-                                    <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
-                                        ricercato</label>
-                                    <input v-model="distance_km" type="number" class="form-control"
-                                        id="distance_number_id" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="row me-5">
-                                <div class="col">
-                                    <h6>Servizi della stanza</h6>
-                                    <div class="form-check" v-for="service in services" :key="service.id">
-                                        <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
-                                            :id="service.id" />
-                                        <label class="form-check-label" :for="service.id"><i :class="service.icon"></i> {{
-                                            service.name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center my-5">
-                                <!-- <button @click="reset()" type="button" class="btn-custom me-3">
-                                    Reset
-                                </button> -->
-                                <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
-                                    class="btn-custom">
-                                    Invia
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <h1 class="my-5 text-center fw-bold">
+                Cerca la tua destinazione, incomincia il tuo viaggio
+            </h1>
 
             <!-- RESULT IN SEARCH PAGE -->
 
             <div class="wrapper-result">
-                <h3 v-if="store.resultCards.length" class="my-5 text-center">
-                    Ecco cosa abbiamo trovato in {{ this.address }}
-                </h3>
                 <div class="row mb-5">
-                    <!--  FILTRI -->
                     <div class="col-12 filter">
-                        <h4 class="fw-bold">Affina la tua ricerca</h4>
+                        <div class="d-flex justify-content-center my-5">
+                            <Searchbar :address="address" />
+                            <!-- BUTTON ACTIVATE OFFCANVAS -->
+                            <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                                <i class="fa-solid fa-sliders"></i>
+                            </button>
+                        </div>
+
+                        <!--  FILTRI -->
+
+                        <h4 class="fw-bold text-center my-5">Affina la tua ricerca</h4>
                         <form @submit.prevent="getCardsFiltered()">
                             <div class="row">
                                 <div class="col-3">
@@ -294,9 +228,6 @@ export default {
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center mt-5 mb-3">
-                                            <!-- <button @click="reset()" type="button" class="btn-custom me-3">
-                                                Reset
-                                            </button> -->
                                             <button @click="getCardsFiltered()" type="button" class="btn-custom">
                                                 Invia
                                             </button>
@@ -311,6 +242,9 @@ export default {
         </div>
 
         <div class="container-xxl">
+            <h3 v-if="store.resultCards.length" class="my-5 text-center">
+                Ecco cosa abbiamo trovato in {{ this.address }}
+            </h3>
             <div class="row">
                 <!-- RESULT SEARCHBAR -->
                 <div class="col-12">
@@ -329,9 +263,72 @@ export default {
             </div>
         </div>
 
+
+        <!-- OFFCANVAS -->
+
+        <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
+            aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
+                    Filtri
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form>
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="room_number_id" class="form-label">Stanze:</label>
+                                <input v-model="room_number" type="number" class="form-control" id="room_number_id" />
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label for="beds_number_id" class="form-label">Posti letto:</label>
+                                <input v-model="beds_number" type="number" class="form-control" id="beds_number_id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="mb-3">
+                                <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
+                                    ricercato</label>
+                                <input v-model="distance_km" type="number" class="form-control" id="distance_number_id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="row me-5">
+                            <div class="col">
+                                <h6>Servizi della stanza</h6>
+                                <div class="form-check" v-for="service in services" :key="service.id">
+                                    <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
+                                        :id="service.id" />
+                                    <label class="form-check-label" :for="service.id"><i :class="service.icon"></i> {{
+                                        service.name }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center my-5">
+                            <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
+                                class="btn-custom">
+                                Invia
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </section>
 </template>
 <style lang="scss" scoped>
+@use '../assets/scss/mediaquery' as *;
+@use '../assets/scss/vars' as *;
+
 .container-sm {
     .jumbo-search {
         height: 350px;
@@ -350,9 +347,11 @@ export default {
 
 .filter {
     display: none;
-    border: 1px solid lightgray;
+    border: 1px solid $color-main;
     border-radius: 10px;
     padding: 30px;
+    box-shadow: 0px 10px 30px -13px #25dd85;
+
 
     .distance-field {
         margin: 20px 0;
@@ -386,5 +385,6 @@ export default {
     position: sticky;
     top: 120px;
     margin-bottom: 50px;
+    border-radius: 10px;
 }
 </style>
