@@ -13,7 +13,6 @@ export default {
 
             if (to.fullPath !== from.fullPath) {
                 this.getCardsFiltered();
-
             }
         },
     },
@@ -37,7 +36,9 @@ export default {
         isSponsored(house) {
             if (house.sponsors[house.sponsors.length - 1]) {
                 const currentDate = new Date();
-                const sponsorEndDate = new Date(house.sponsors[house.sponsors.length - 1].pivot.sponsor_end);
+                const sponsorEndDate = new Date(
+                    house.sponsors[house.sponsors.length - 1].pivot.sponsor_end
+                );
                 return sponsorEndDate > currentDate;
             }
         },
@@ -63,7 +64,6 @@ export default {
             this.lat = this.$route.query.lat;
             this.long = this.$route.query.long;
 
-
             // TRASFORMO IL INPUT DEL UTENTE DA KM IN METRI
             const distance_meters = parseFloat(this.distance_km) * 1000;
 
@@ -74,21 +74,23 @@ export default {
                 )
                 .then((res) => {
                     store.resultCards = [];
-                    res.data.forEach(house => {
+                    res.data.forEach((house) => {
                         if (this.isSponsored(house)) {
-                            store.resultCards.push(house)
+                            store.resultCards.push(house);
                         }
                     });
-                    res.data.forEach(house => {
+                    res.data.forEach((house) => {
                         if (!this.isSponsored(house)) {
-                            store.resultCards.push(house)
+                            store.resultCards.push(house);
                         }
                     });
                     if (!res.data.length) {
                         this.noHouse = true;
                     }
                     // store.resultCards = res.data;
+
                     this.fetchMapMultiMarker();
+
                     router.push({
                         name: "searchpage",
                         query: {
@@ -102,37 +104,30 @@ export default {
                         },
                     });
                     this.isLoading = false;
-
                 })
                 .catch((err) => {
                     console.error(err);
-                }).then(() => {
-
-                });;
-
-            // console.log(store.resultCards)
+                })
+                .then(() => { });
         },
 
         //costruisco mappa da mostrare nella pagina della ricerca, contenente i marker degli appartamenti.
         fetchMapMultiMarker() {
-
             //inizializzo variabile per registrare i dati
             const houseDatas = [];
 
             //Prendere le coordinate e i dati desiderati in arrivo nella resultCards e costruire un oggetto con delle proprietà
             store.resultCards.forEach((house) => {
-
                 const houseData = {
                     long: house.longitude,
                     lat: house.latitude,
                     name: house.name,
                     price: house.night_price,
-                    id: house.id
+                    id: house.id,
                 };
 
                 //uso metodo push per salvare i dati nel array
                 houseDatas.push(houseData);
-
             });
 
             //uso le coordinate della ricerca per posizionare il centro della mappa
@@ -140,25 +135,24 @@ export default {
 
             //costruisco al mappa
             const map = tt.map({
-                key: 'soH7vSRFYTpCT37GOm8wEimPoDyc3GMe',
+                key: "soH7vSRFYTpCT37GOm8wEimPoDyc3GMe",
                 container: "map",
                 center: center,
-                zoom: 10
-            })
+                zoom: 10,
+            });
 
             //itero all'inerno dell'array di oggetti per posizionare i marker all'interno della mappa.
             houseDatas.forEach((data) => {
-
                 //registro le coordinate del marker
-                const marker = [data.long, data.lat]
+                const marker = [data.long, data.lat];
                 //genero il marker
-                const newMarker = new tt.Marker().setLngLat(marker).addTo(map)
+                const newMarker = new tt.Marker().setLngLat(marker).addTo(map);
 
-                const popup = new tt.Popup({ anchor: 'top' }).setText(data.price + ' €' + ' - ' + data.name);
-                newMarker.setPopup(popup).togglePopup()
-
-            })
-
+                const popup = new tt.Popup({ anchor: "top" }).setText(
+                    data.price + " €" + " - " + data.name
+                );
+                newMarker.setPopup(popup).togglePopup();
+            });
         },
     },
     created() {
@@ -171,94 +165,34 @@ export default {
 </script>
 <template>
     <AppLoader v-if="isLoading" />
-    <section v-else class="container-sm container-xxl d-flex flex-column align-items-center mb-5">
-        <div class="jumbo-search">
-            <h1 class="mb-5 text-center fw-bold">
-                Cerca la tua destinazione, incomincia il tuo viaggio
-            </h1>
-            <div class="d-flex align-items-center">
-                <Searchbar :address="address" />
-                <!-- BUTTON ACTIVATE OFFCANVAS -->
-                <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-                    <i class="fa-solid fa-sliders"></i>
-                </button>
+    <section v-else>
+        <div class="container-sm container-xxl">
+            <div class="jumbo-search">
+                <h1 class="mb-5 text-center fw-bold">
+                    Cerca la tua destinazione, incomincia il tuo viaggio
+                </h1>
+                <div class="d-flex align-items-center">
+                    <Searchbar :address="address" />
+                    <!-- BUTTON ACTIVATE OFFCANVAS -->
+                    <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- OFFCANVAS -->
+            <!-- OFFCANVAS -->
 
-        <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
-            aria-labelledby="staticBackdropLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
-                    Filtri
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <form>
-                    <div class="row">
-                        <div class="col-5">
-                            <div class="mb-3">
-                                <label for="room_number_id" class="form-label">Stanze:</label>
-                                <input v-model="room_number" type="number" class="form-control" id="room_number_id" />
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <div class="mb-3">
-                                <label for="beds_number_id" class="form-label">Posti letto:</label>
-                                <input v-model="beds_number" type="number" class="form-control" id="beds_number_id" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-7">
-                            <div class="mb-3">
-                                <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
-                                    ricercato</label>
-                                <input v-model="distance_km" type="number" class="form-control" id="distance_number_id" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <div class="row me-5">
-                            <div class="col">
-                                <h6>Servizi della stanza</h6>
-                                <div class="form-check" v-for="service in services" :key="service.id">
-                                    <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
-                                        :id="service.id" />
-                                    <label class="form-check-label" :for="service.id"><i :class="service.icon"></i> {{
-                                        service.name }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center my-5">
-                            <!-- <button @click="reset()" type="button" class="btn-custom me-3">
-                                Reset
-                            </button> -->
-                            <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
-                                class="btn-custom">
-                                Invia
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- RESULT IN SEARCH PAGE -->
-
-        <div class="wrapper-result">
-            <h3 v-if="store.resultCards.length" class="my-5 text-center">
-                Ecco cosa abbiamo trovato in {{ this.address }}
-            </h3>
-            <div class="row">
-                <!-- SIDEBRA FILTRI -->
-                <div class="col-4 sidebar">
-                    <h4 class="fw-bold">Affina la tau ricerca</h4>
-                    <form @submit.prevent="getCardsFiltered()">
+            <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title mt-5" id="staticBackdropLabel">
+                        Filtri
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <form>
                         <div class="row">
                             <div class="col-5">
                                 <div class="mb-3">
@@ -276,63 +210,128 @@ export default {
                         <div class="row">
                             <div class="col-7">
                                 <div class="mb-3">
-                                    <label for="distance_number_id" class="form-label">Distanza dal indirizzo
+                                    <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
                                         ricercato</label>
-                                    <input type="range" v-model="distance_km" class="form-range my-3" min="5" max="100"
-                                        step="5" id="distance_number_id">
-                                    <span class="distance-field">{{ this.distance_km }} Km</span>
+                                    <input v-model="distance_km" type="number" class="form-control"
+                                        id="distance_number_id" />
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex mt-5">
+                        <div class="d-flex flex-column">
                             <div class="row me-5">
                                 <div class="col">
                                     <h6>Servizi della stanza</h6>
                                     <div class="form-check" v-for="service in services" :key="service.id">
                                         <input @click="isSelect(service.id)" class="form-check-input" type="checkbox"
-                                            :id="'side-' + service.id" />
-                                        <label class="form-check-label" :for="'side-' + service.id"><i
-                                                :class="service.icon"></i> {{ service.name }}
+                                            :id="service.id" />
+                                        <label class="form-check-label" :for="service.id"><i :class="service.icon"></i> {{
+                                            service.name }}
                                         </label>
                                     </div>
-                                    <div class="d-flex justify-content-end my-5">
-                                        <!-- <button @click="reset()" type="button" class="btn-custom me-3">
-                                            Reset
-                                        </button> -->
-                                        <button @click="getCardsFiltered()" type="button" class="btn-custom">
-                                            Invia
-                                        </button>
-                                    </div>
                                 </div>
+                            </div>
+                            <div class="d-flex justify-content-center my-5">
+                                <!-- <button @click="reset()" type="button" class="btn-custom me-3">
+                                    Reset
+                                </button> -->
+                                <button data-bs-dismiss="offcanvas" @click="getCardsFiltered()" type="button"
+                                    class="btn-custom">
+                                    Invia
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
 
+            <!-- RESULT IN SEARCH PAGE -->
+
+            <div class="wrapper-result">
+                <h3 v-if="store.resultCards.length" class="my-5 text-center">
+                    Ecco cosa abbiamo trovato in {{ this.address }}
+                </h3>
+                <div class="row mb-5">
+                    <!--  FILTRI -->
+                    <div class="col-12 filter">
+                        <h4 class="fw-bold">Affina la tua ricerca</h4>
+                        <form @submit.prevent="getCardsFiltered()">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label for="room_number_id" class="form-label">Stanze:</label>
+                                        <input v-model="room_number" type="number" class="form-control"
+                                            id="room_number_id" />
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="mb-3">
+                                        <label for="beds_number_id" class="form-label">Posti letto:</label>
+                                        <input v-model="beds_number" type="number" class="form-control"
+                                            id="beds_number_id" />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="distance_number_id" class="form-label">Distanza dal indirizzo
+                                            ricercato</label>
+                                        <input type="range" v-model="distance_km" class="form-range my-3" min="5" max="100"
+                                            step="5" id="distance_number_id" />
+                                        <span class="distance-field">{{ this.distance_km }} Km</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex mt-5">
+                                <div class="row me-5">
+                                    <div class="col">
+                                        <h6>Servizi della stanza</h6>
+                                        <div class="wrapper-checkbox">
+                                            <div v-for="service in services" :key="service.id" class="form-check">
+                                                <input @click="isSelect(service.id)" class="form-check-input mx-3"
+                                                    type="checkbox" :id="'side-' + service.id" />
+                                                <label class="form-check-label" :for="'side-' + service.id"><i
+                                                        :class="service.icon"></i> {{ service.name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mt-5 mb-3">
+                                            <!-- <button @click="reset()" type="button" class="btn-custom me-3">
+                                                Reset
+                                            </button> -->
+                                            <button @click="getCardsFiltered()" type="button" class="btn-custom">
+                                                Invia
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-xxl">
+            <div class="row">
                 <!-- RESULT SEARCHBAR -->
-                <div class="col-12 col-lg-8 search-result" :class="{ 'justify-content-center': !store.resultCards.length }">
+                <div class="col-12">
+                    <div id="map"></div>
+                </div>
+                <div class="col-12 search-result" :class="{ 'justify-content-center': !store.resultCards.length }">
                     <div v-if="noHouse == true" class="d-flex flex-column align-items-center justify-content-center">
                         <i class="fa-solid fa-house-circle-xmark fa-shake fa-2xl mb-5" style="color: red"></i>
-                        <h5 class="text-centern " :class="{ 'd-block': noHouse }">
+                        <h5 class="text-centern" :class="{ 'd-block': noHouse }">
                             Siamo spiacenti non abbiamo trovato quello che cercavi
                         </h5>
                     </div>
                     <HouseCard v-for="house in store.resultCards" :key="house.id" :house="house" />
 
-                    <div id="map">
-
-                    </div>
                 </div>
             </div>
         </div>
+
     </section>
 </template>
 <style lang="scss" scoped>
-#map {
-    height: 500px;
-    width: 100%;
-}
-
 .container-sm {
     .jumbo-search {
         height: 350px;
@@ -349,7 +348,7 @@ export default {
     width: 100%;
 }
 
-.sidebar {
+.filter {
     display: none;
     border: 1px solid lightgray;
     border-radius: 10px;
@@ -361,6 +360,11 @@ export default {
         padding: 10px;
         border-radius: 10px;
     }
+
+    .btn-custom {
+        padding: 10px 30px;
+        font-size: 1.2rem;
+    }
 }
 
 .search-result {
@@ -368,5 +372,19 @@ export default {
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+}
+
+.wrapper-checkbox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#map {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    position: sticky;
+    top: 120px;
+    margin-bottom: 50px;
 }
 </style>

@@ -19,10 +19,10 @@ export default {
 
 <template>
     <div>
-        <RouterLink :to="{ name: 'house-detail', params: { id: house.id } }">
-            <div class="card">
-                <img :src="house.photo" class="card-img-top" alt="jumbo">
-                <div class="card-body">
+        <RouterLink :to="{ name: 'house-detail', params: { id: house.id } }" class="card">
+            <img :src="house.photo" class="card-img-top" alt="jumbo">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="card-content">
                     <h6>{{ house.name }}</h6>
                     <div class="evidence-services m-0 mb-3">
                         <span>stanze {{ house.total_rooms }}</span> |
@@ -32,9 +32,13 @@ export default {
                     </div>
                     <div v-if="house.home_address">{{ house.home_address }}</div>
                     <div v-else class="address m-0">{{ house.address.home_address }}</div>
-                    <span v-for="service in house.services" :key="service.id">
-                        <i :class="service.icon"></i>&nbsp;
-                    </span>
+                    <div class="my-3">
+                        <span v-for="service in house.services" :key="service.id" class="my-5">
+                            <i :class="service.icon"></i>&nbsp;
+                        </span>
+                    </div>
+                </div>
+                <div class="card-footer">
                     <div class="d-flex justify-content-between"><strong>{{ house.night_price }} /Notte</strong>
                         <span v-if="isSponsored">
                             <i class="fa-solid fa-star fa-flip" style="color: #22dd85;"></i>
@@ -48,7 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-    width: 25rem;
+    width: 23rem;
 
     .card-img-top {
         height: 350px;
