@@ -80,7 +80,6 @@ export default {
             this.successMessage = null;
             this.form.house_id = this.$route.params.id;
             this.form.name = this.inputName + ' ' + this.inputSurname;
-            console.log(this.form.name)
             axios.post(messageEndpoint, this.form)
                 // Inviato il form lo svuoto riportandolo allo stato iniziale
                 .then(res => {
@@ -208,14 +207,20 @@ export default {
                                     <h5 class="text-center my-3 fw-bolder">Invia un messaggio al host per maggiori
                                         informazioni</h5>
 
+                                    <!-- ALLET ERRORS -->
                                     <AppAlert :type="alertType" :isOpen="showAlert">
-                                        <div v-if="successMessage"> <i class="fa-solid fa-check fa-xl me-3"
-                                                style="color: #24dd83;"></i> {{ successMessage }}</div>
-                                        <ul v-if="hasErrors">
-                                            <li v-for="(error, field) in errors" :key="field">{{ error }}</li>
-                                        </ul>
+                                        <div v-if="successMessage" class="d-flex justify-content-center align-items-center">
+                                            <i class="fa-solid fa-check fa-xl me-3" style="color: #24dd83;"></i>
+                                            {{ successMessage }}
+                                        </div>
+                                        <div v-if="hasErrors">
+                                            <ul class="errors-contant-form">
+                                                <li v-for="(error, field) in errors" :key="field">{{ error }}</li>
+                                            </ul>
+                                        </div>
                                     </AppAlert>
 
+                                    <!-- FORM CONTACT HOST -->
                                     <form @submit.prevent="sendForm" novalidate
                                         class="d-flex flex-column align-items-center ">
                                         <div class="container mb-3">
@@ -431,5 +436,11 @@ export default {
 
 .offcanvas {
     height: 100%;
+}
+
+.errors-contant-form {
+
+    list-style-type: none;
+
 }
 </style>
