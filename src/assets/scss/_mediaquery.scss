@@ -80,6 +80,10 @@
     justify-content: space-between;
     margin-bottom: 50px;
   }
+
+  .container-xxl .wrapper-result div.search-bar-mobile {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 996px) {
@@ -153,7 +157,7 @@
   }
 
   .container-xxl .col-12.search-result {
-    justify-content: space-between;
+    justify-content: start;
     margin-bottom: 50px;
   }
 }

@@ -20,14 +20,24 @@ export default {
             isSelected: false,
             isLoading: false,
             debouncedFetchAddress: null,
-            isClicked: false,
             lat: "",
             long: "",
             showSelectionMessage: false,
         }
     },
     computed: {
+        disableSelect() {
+            const dom = document.getElementById('app');
 
+            dom.addEventListener('click', function (event) {
+                if (event.target === dom) {
+                    console.log('clicca')
+                    this.isSelected = false
+                }
+            })
+
+            return this.disableSelect;
+        }
     },
     methods: {
         handleSearchCityInput() {
@@ -95,7 +105,7 @@ export default {
 <template>
     <AppLoader v-if="isLoading" />
     <div class="wrapper-search d-flex flex-column ">
-        <div v-if="isWrong" class="alert alert-info  mb-5">
+        <div v-if="isWrong && !isSelected" class="alert alert-info  mb-5">
             <i class="fa-solid fa-house-circle-exclamation fa-bounce fa-xl me-3" style="color: #25dd85;"></i>
             <strong>Seleziona uno dei suggerimenti</strong>
         </div>
@@ -128,14 +138,16 @@ export default {
 
 .search-bar {
     width: 300px;
-    box-shadow: 0px 10px 30px -13px #25dd85;
-    border: 1px solid #25dd85;
+    box-shadow: 0px 26px 30px -20px #25dd843f;
     position: relative;
+    border: 3px solid #25dd85;
+    border-radius: 25px;
 
     .form-control {
         height: 40px;
         border: 0;
         font-size: 1rem;
+        transition: none;
     }
 
     .btn-search {
@@ -156,6 +168,7 @@ export default {
         box-shadow: none;
         border-color: white;
     }
+
 
     .btn-search:active {
         border-color: white;

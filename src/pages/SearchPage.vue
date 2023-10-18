@@ -174,17 +174,20 @@ export default {
             <!-- RESULT IN SEARCH PAGE -->
 
             <div class="wrapper-result">
+
+                <!-- SEARCHBAR -->
+
+                <div class="search-bar-mobile d-flex justify-content-center">
+                    <Searchbar :address="address" />
+                    <!-- BUTTON ACTIVATE OFFCANVAS -->
+                    <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                </div>
+
                 <div class="row mb-5">
                     <div class="col-12 filter">
-                        <div class="d-flex justify-content-center my-5">
-                            <Searchbar :address="address" />
-                            <!-- BUTTON ACTIVATE OFFCANVAS -->
-                            <button class="btn btn-light open-offcanvas" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
-                                <i class="fa-solid fa-sliders"></i>
-                            </button>
-                        </div>
-
                         <!--  FILTRI -->
 
                         <h4 class="fw-bold text-center my-5">Affina la tua ricerca</h4>
@@ -293,9 +296,11 @@ export default {
                     <div class="row">
                         <div class="col-7">
                             <div class="mb-3">
-                                <label for="distance_number_id" class="form-label">Distanza in metri dal indirizzo
+                                <label for="distance_number_id" class="form-label">Distanza dal indirizzo
                                     ricercato</label>
-                                <input v-model="distance_km" type="number" class="form-control" id="distance_number_id" />
+                                <input type="range" v-model="distance_km" class="form-range my-3" min="5" max="100" step="5"
+                                    id="distance_number_id" />
+                                <span class="distance-field">{{ this.distance_km }} Km</span>
                             </div>
                         </div>
                     </div>
@@ -347,10 +352,10 @@ export default {
 
 .filter {
     display: none;
-    border: 1px solid $color-main;
+    // border: 1px solid $color-main;
     border-radius: 10px;
     padding: 30px;
-    box-shadow: 0px 10px 30px -13px #25dd85;
+    box-shadow: 0px 26px 30px -20px #25dd843f;
 
 
     .distance-field {
