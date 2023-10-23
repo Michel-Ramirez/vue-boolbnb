@@ -19,6 +19,8 @@ export default {
             inputName: "",
             inputSurname: "",
             ipAddress: null,
+            currentIndex: 0,
+            housePhotos: [],
         };
     },
     computed: {
@@ -44,6 +46,8 @@ export default {
                 axios.post("http://127.0.0.1:8000/api/houses/views", params).then()
             })
         },
+
+        // FETCH HOUSE DATAS
         fetchData() {
             this.isLoading = true;
             const endpoint = 'http://127.0.0.1:8000/api/houses/';
@@ -51,7 +55,12 @@ export default {
             axios.get(endpoint + houseId).then((res) => {
                 this.houseData.push(res.data);
 
-                // console.log(this.houseData[0].address.latitude, this.houseData[0].address.longitude);
+                this.houseData.forEach(photos => {
+                    this.housePhotos = photos.photos
+                });
+
+                console.log('photos', this.housePhotos)
+                console.log('houseData', this.houseData)
             }).catch().then(() => { this.isLoading = false; });
         },
         mapTimeOut() {
@@ -59,6 +68,8 @@ export default {
                 this.fetchMap();
             }, 200);
         },
+
+        // FETCH DATA AND CREATE MAP
         fetchMap() {
             let lat = this.houseData[0].address.latitude;
             let long = this.houseData[0].address.longitude;
@@ -75,6 +86,9 @@ export default {
                 new tt.Marker().setLngLat(center).addTo(map)
             })
         },
+
+        // SEND MESSAGES TO HOST
+
         sendForm() {
             this.errors = {};
             this.successMessage = null;
@@ -84,7 +98,6 @@ export default {
                 // Inviato il form lo svuoto riportandolo allo stato iniziale
                 .then(res => {
                     this.form = emtyForm;
-                    console.log(this.form);
                     this.successMessage = 'Messaggio inviato'
                 })
                 .catch(err => {
@@ -103,7 +116,29 @@ export default {
 
                 })
                 .then(() => { });
-        }
+        },
+
+        // CAROUSEL
+
+        gotoNext() {
+
+            if (this.currentIndex === this.housePhotos.length - 1) {
+                this.currentIndex = 0;
+            } else {
+                this.currentIndex++;
+            }
+        },
+        gotoPrev() {
+
+            if (this.currentIndex === 0) {
+                this.currentIndex = this.housePhotos.length - 1;
+            } else {
+                this.currentIndex--;
+            }
+        },
+        gotoCurrentImg(targetIndex) {
+            this.currentIndex = targetIndex;
+        },
     },
     mounted() {
         this.fetchIpAddress()
@@ -119,9 +154,24 @@ export default {
         <div v-else>
             <div class="house-detail container my-5" v-for="house in  houseData " :key="house.id">
                 <h1 class="my-5 fw-bold">{{ house.type }} | {{ house.name }}</h1>
-                <div>
-                    <img :src="house.photo" :alt="house.name" class="img-fluid w-100">
+                <!-- CAROUSEL -->
+                <div class="carousel">
+                    <div id="prev" @click="gotoPrev()">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                    <div class="gallery" v-for='(image, index) in house.photos' v-show="currentIndex === index"
+                        :key="house.id">
+
+                        <img :src="image.img" class="img-fluid">
+                        <div class="counter">
+                            <span class="counter-text">{{ index + 1 }}/{{ housePhotos.length }}</span>
+                        </div>
+                    </div>
+                    <div id="next" @click="gotoNext">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
                 </div>
+                <!-- CONTENT -->
                 <div class="row my-4">
                     <div class="col-xl-8 content-container pe-5">
                         <div>
@@ -207,7 +257,7 @@ export default {
                                     <h5 class="text-center my-3 fw-bolder">Invia un messaggio al host per maggiori
                                         informazioni</h5>
 
-                                    <!-- ALLET ERRORS -->
+                                    <!-- ALET ERRORS -->
                                     <AppAlert :type="alertType" :isOpen="showAlert">
                                         <div v-if="successMessage" class="d-flex justify-content-center align-items-center">
                                             <i class="fa-solid fa-check fa-xl me-3" style="color: #24dd83;"></i>
@@ -442,5 +492,81 @@ export default {
 
     list-style-type: none;
 
+}
+
+
+// CAROUSEL
+
+.gallery img {
+    height: 750px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.carousel {
+    position: relative;
+
+    #prev,
+    #next {
+        i {
+            color: white;
+            font-size: 3rem;
+        }
+
+        position: absolute;
+        height: 100%;
+        width: 120px;
+        background-color: rgba(0, 0, 0, 0.349);
+        visibility: hidden;
+        font-size: 2rem;
+        top: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+    .counter {
+        width: 100%;
+        position: absolute;
+        bottom: 20px;
+        display: flex;
+        justify-content: center;
+
+        .counter-text {
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.37);
+        }
+    }
+}
+
+#prev {
+    left: 0px;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+#next {
+    right: 0px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.carousel:hover #next,
+.carousel:hover #prev {
+    visibility: visible;
+    animation: fadeIn 1s;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
 }
 </style>

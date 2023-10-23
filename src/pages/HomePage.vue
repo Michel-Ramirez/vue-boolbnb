@@ -60,7 +60,7 @@ export default {
                 this.evidenceHouses = res.data.houses.data;
 
                 this.allHouses = res.data.all_houses;
-                // console.log(this.evidenceHouses)
+                console.log(this.allHouses)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })

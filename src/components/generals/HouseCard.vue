@@ -20,7 +20,17 @@ export default {
 <template>
     <div>
         <RouterLink :to="{ name: 'house-detail', params: { id: house.id } }" class="card">
-            <img :src="house.photo" class="card-img-top" alt="jumbo">
+
+
+            <div v-for="(photo, index) in  house.photos ">
+                <div v-if="index === 0">
+                    <img :src="photo.img" class="card-img-top" alt="jumbo">
+                </div>
+                <!-- <div v-else>
+                    <img src="https://saterdesign.com/cdn/shop/products/property-placeholder_a9ec7710-1f1e-4654-9893-28c34e3b6399_600x.jpg?v=1500393334"
+                        class="card-img-top" alt="jumbo">
+                </div> -->
+            </div>
             <div class="card-body d-flex flex-column justify-content-between">
                 <div class="card-content">
                     <h6>{{ house.name }}</h6>
@@ -33,7 +43,7 @@ export default {
                     <div v-if="house.home_address">{{ house.home_address }}</div>
                     <div v-else class="address m-0">{{ house.address.home_address }}</div>
                     <div class="my-3">
-                        <span v-for="service in house.services" :key="service.id" class="my-5">
+                        <span v-for=" service  in  house.services " :key="service.id" class="my-5">
                             <i :class="service.icon"></i>&nbsp;
                         </span>
                     </div>
