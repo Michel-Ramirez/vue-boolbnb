@@ -89,6 +89,8 @@ export default {
                     }
                     // store.resultCards = res.data;
 
+                    console.log(store.resultCards);
+
                     this.fetchMapMultiMarker();
 
                     router.push({
@@ -261,7 +263,6 @@ export default {
                         </h5>
                     </div>
                     <HouseCard v-for="house in store.resultCards" :key="house.id" :house="house" />
-
                 </div>
             </div>
         </div>

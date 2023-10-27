@@ -19,6 +19,7 @@ export default {
             counter: 9,
             searchResults: [],
             showGoUp: false,
+            noMore: false,
 
             popularCityes: [
                 {
@@ -49,6 +50,12 @@ export default {
         }
     },
     computed: {
+        moreHouses() {
+            if (this.allHouses.length > this.counter) {
+                this.noMore = true;
+            }
+            return this.moreHouses;
+        },
         visibleHouses() {
             return this.allHouses.slice(0, this.counter);
         }
@@ -60,7 +67,6 @@ export default {
                 this.evidenceHouses = res.data.houses.data;
 
                 this.allHouses = res.data.all_houses;
-                console.log(this.allHouses)
             }).catch(err => {
                 console.log(err);
             }).then(() => { this.isLoading = false })
@@ -160,7 +166,7 @@ export default {
         <section class="travel-jumbo">
             <img src="../../public/img/travel.png" alt="_travel" class="img-fluid img-travel-banner">
         </section>
-        <section class="popular-city container-fluid my-5 pt-3">
+        <section class="container-xxl popular-city container-fluid my-5 pt-3">
             <h2 class="text-center my-5"><strong>Le mete Italiane più famose</strong></h2>
             <div class="row">
                 <div class="col wrapper-city">
