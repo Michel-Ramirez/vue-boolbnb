@@ -19,7 +19,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.926);
+    background-color: rgb(120, 119, 119);
     display: flex;
     justify-content: center;
     align-items: center;
