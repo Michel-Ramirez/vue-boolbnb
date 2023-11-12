@@ -26,10 +26,6 @@ export default {
                 <div v-if="index === 0">
                     <img :src="photo.img" class="card-img-top" alt="jumbo">
                 </div>
-                <!-- <div v-else>
-                    <img src="https://saterdesign.com/cdn/shop/products/property-placeholder_a9ec7710-1f1e-4654-9893-28c34e3b6399_600x.jpg?v=1500393334"
-                        class="card-img-top" alt="jumbo">
-                </div> -->
             </div>
             <div class="card-body d-flex flex-column justify-content-between">
                 <div class="card-content">
